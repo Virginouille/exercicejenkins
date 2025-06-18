@@ -15,13 +15,21 @@ export class HomeComponent implements OnInit {
 
   private httpClient: HttpClient = inject(HttpClient);
 
-  title: string = 'Mes annonces';
 
+  title: string = 'Trouvez votre colocation idéale';
+  subtitle:string = 'Découvrez des espaces de vie partagés exceptionnels dans toute la France';
+  heroImage:string = 'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80';
+
+  // Statistiques
+  totalAnnonces :number = 1247;
+  villesDisponibles:number  = 45;
+  colocatairesActifs:number  = 3829;
   announcements: Announcement[] = [];
 
   ngOnInit(): void {
 
-    this.httpClient.get<Announcement[]>('http://51.254.112.67/api/announcements',
+    this.httpClient.get<Announcement[]>(
+      'http://51.254.112.67/api/announcements',
       { headers: { 'accept': 'application/json' } }
     ).subscribe({
       next: (data) => {
