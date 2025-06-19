@@ -3,11 +3,13 @@ import Announcement from '../../models/announcement.interface';
 
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
+import { RouterLink } from '@angular/router';
+import { environment } from '../../../environments/environment.development';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule,RouterLink],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })
@@ -29,7 +31,7 @@ export class HomeComponent implements OnInit {
   ngOnInit(): void {
 
     this.httpClient.get<Announcement[]>(
-      'http://51.254.112.67/api/announcements',
+      environment.apiUrl + 'api/announcements',
       { headers: { 'accept': 'application/json' } }
     ).subscribe({
       next: (data) => {
