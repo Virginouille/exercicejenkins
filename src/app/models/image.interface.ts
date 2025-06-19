@@ -1,4 +1,4 @@
 export default interface Image {
-  id: number
+  readonly id: number
   imageUrl: string
 }

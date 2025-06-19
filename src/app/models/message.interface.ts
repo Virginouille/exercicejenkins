@@ -1,7 +1,7 @@
 import User from "./user.interface"
 
 export default interface Message {
-  id: number
+  readonly id: number
   createdAt: string
   receiver: User
   sender: User

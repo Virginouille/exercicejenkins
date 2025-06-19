@@ -1,7 +1,7 @@
 import User  from "./user.interface"
 
 export default interface Reservation {
-  id: number
+  readonly id: number
   startDate: string
   endDate: string
   status: string

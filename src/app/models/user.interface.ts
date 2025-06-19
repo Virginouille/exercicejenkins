@@ -1,5 +1,5 @@
 export default interface User {
-  id: number
+  readonly id: number
   email: string
   roles: string[]
   password: string

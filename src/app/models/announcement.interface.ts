@@ -5,7 +5,7 @@ import Service from  "./service.interface";
 import User from "./user.interface";
 
 export default interface Announcement {
-  id: number
+  readonly id: number
   title: string
   description: string
   fullAddress: string

@@ -1,5 +1,5 @@
 export default interface Equipment {
-  id: number
+  readonly id: number
   title: string
   description: string
 }
