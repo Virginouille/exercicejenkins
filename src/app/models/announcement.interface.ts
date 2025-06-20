@@ -8,7 +8,6 @@ export default interface Announcement {
   readonly id: number
   title: string
   description: string
-  fullAddress: string
   address: string
   city: string
   zipcode: string
@@ -20,6 +19,6 @@ export default interface Announcement {
   user: User
   images: Image[]
   services: Service[]
-  equipment: Equipment[]
+  equipments: Equipment[]
   reservations: Reservation[]
 }

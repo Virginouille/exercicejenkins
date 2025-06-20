@@ -5,11 +5,13 @@ import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { RouterLink } from '@angular/router';
 import { environment } from '../../../environments/environment.development';
+import { EquipmentIconPipe } from '../../pipes/equipment-icon.pipe';
+import { ServiceIconPipe } from '../../pipes/service-icon.pipe';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule,RouterLink],
+  imports: [CommonModule,RouterLink,ServiceIconPipe,EquipmentIconPipe],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })
@@ -42,4 +44,10 @@ export class HomeComponent implements OnInit {
     });
 
   }
+
+  getRandomClients(max: number): string {
+    const random = Math.round(Math.random() * max);
+    return `${random} / ${max}`;
+  }
+
 }
