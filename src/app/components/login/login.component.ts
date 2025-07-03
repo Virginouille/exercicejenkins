@@ -53,8 +53,9 @@ export class LoginComponent {
       this.userService.login(this.loginForm.value).subscribe({
         next: (data: any) => {
           //Récupération du token
-          console.log(data.token);
-          //Sauvegarde du token en storage
+          console.log(data);
+          // Stocker le token en localStorage
+
         },
         error: (error) => {
           console.log(error.error.message);
