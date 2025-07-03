@@ -1,52 +1,65 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import {
+  FormBuilder,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
+import { UserService } from '../../services/user.service';
+import User from '../../models/user.interface';
 
 @Component({
   selector: 'app-login',
   standalone: true,
   imports: [ReactiveFormsModule, CommonModule],
   templateUrl: './login.component.html',
-  styleUrl: './login.component.css'
+  styleUrl: './login.component.css',
 })
 export class LoginComponent {
-
-  inputPWType: string = "password";
-  loginForm:FormGroup; // Represente mon formulaire <form>
-  formBuilder:FormBuilder = inject(FormBuilder);
-
-  constructor(){
+  inputPWType: string = 'password';
+  loginForm: FormGroup; // Represente mon formulaire <form>
+  formBuilder: FormBuilder = inject(FormBuilder);
+  userService: UserService = inject(UserService);
+  constructor() {
     // Création du formGroup
     this.loginForm = this.formBuilder.group({
-      myControl1: ['',[Validators.required,Validators.email]],
-      myControl2: ['',[Validators.required,Validators.pattern('^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$')]]
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', [Validators.required]],
     });
   }
 
-
   togglePW() {
-    if(this.inputPWType === "password"){
-      this.inputPWType = "text";
-    }else{
-      this.inputPWType = "password";
+    if (this.inputPWType === 'password') {
+      this.inputPWType = 'text';
+    } else {
+      this.inputPWType = 'password';
     }
   }
-  monFormEstSoumis(){
+  monFormEstSoumis() {
     // console.log("MON FORM EST SOUMIS");
     // console.log("loginForm.valid ",this.loginForm.valid);
     // console.log("Toutes les valeurs des control du groupe -> loginForm.value ",this.loginForm.value);
-    // console.log("Recuperer un seul control avec loginForm.get('myControl1')",this.loginForm.get("myControl2"));
-    // console.log("Recuperer la validité d'un control avec loginForm.get('myControl2').valid",this.loginForm.get("myControl1")?.valid);
-    // console.log("Recuperer les erreurs d'un control avec loginForm.get('myControl2').errors",this.loginForm.get("myControl2")?.errors);
-    // console.log("Recuperer un seul control avec loginForm.get('myControl2')",this.loginForm.get("myControl2"));
+    // console.log("Recuperer un seul control avec loginForm.get('email')",this.loginForm.get("password"));
+    // console.log("Recuperer la validité d'un control avec loginForm.get('password').valid",this.loginForm.get("email")?.valid);
+    // console.log("Recuperer les erreurs d'un control avec loginForm.get('password').errors",this.loginForm.get("password")?.errors);
+    // console.log("Recuperer un seul control avec loginForm.get('password')",this.loginForm.get("password"));
 
-    if(this.loginForm.valid){
-
-      console.log("Form valide je peux envoyé la requete de login a l'api");
-      
+    if (this.loginForm.valid) {
+      console.log(
+        "Form valide je peux envoyer la requete de login a l'api /auth"
+      );
+      // Appel de la méthode du service
+      this.userService.login(this.loginForm.value).subscribe({
+        next: (data: any) => {
+          //Récupération du token
+          console.log(data.token);
+          //Sauvegarde du token en storage
+        },
+        error: (error) => {
+          console.log(error.error.message);
+        },
+      });
     }
-
   }
-
-
 }

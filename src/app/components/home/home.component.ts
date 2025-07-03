@@ -46,24 +46,6 @@ export class HomeComponent implements OnInit {
       }
 
     });
-this.httpClient.get<User[]>(
-      'https://atelier-de-toril.fr/' + 'api/me',
-      {
-        headers: {
-          'Authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpYXQiOjE3NTEzNjc1ODIsImV4cCI6MTc1MTM3MTE4Miwicm9sZXMiOlsiUk9MRV9VU0VSIl0sInVzZXJuYW1lIjoic3RyaW5nIn0.FEER6JiNR7ErVhGSXFpdDfbwppKlRRLQGsPWvXruPsdfTfc6gj6y9VESi27lP6T6_jV-m5MxPP9Kkr36vTALcpZkKLzacYDsH7rhnJvDJEjOQN5Dil-FyPR48pmNzhskDj-9KPpkrVXfTfckR5_nIWlooJ-ZuQQZ7w-zU023od2TL8p5ysQu2WVb_m6I8tY9RDKzjV5-cSHyb-y7CmWJYCVy4I-Uxw4qvbhkFPIWqZmWutIaRVA4lZUIIwbxTP8Je0YK6rYAMyCrowTUwZ6ex6mVcq9AUs04AzJgCutqvS3ryyRxIo5fJORqJCDQkud_LX_d4tS26H4nuVmXIV0NBA'
-        },
-    }
-    ).subscribe({
-      next: (data) => {
-        console.log(data);
-      }
 
-    });
   }
-
-  getRandomClients(max: number): string {
-    const random = Math.round(Math.random() * max);
-    return `${random} / ${max}`;
-  }
-
 }
