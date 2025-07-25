@@ -21,7 +21,7 @@ export class LoginComponent {
   loginForm: FormGroup; // Represente mon formulaire <form>
   formBuilder: FormBuilder = inject(FormBuilder);
   userService: UserService = inject(UserService);
-  
+
   constructor() {
     // Création du formGroup
     this.loginForm = this.formBuilder.group({
@@ -38,6 +38,7 @@ export class LoginComponent {
       this.inputPWType = 'password';
     }
   }
+
   monFormEstSoumis() {
     // console.log("MON FORM EST SOUMIS");
     // console.log("loginForm.valid ",this.loginForm.valid);
@@ -57,7 +58,7 @@ export class LoginComponent {
           //Récupération du token
           console.log(data);
           // Stocker le token en localStorage
-
+          
         },
         error: (error) => {
           console.log(error.error.message);

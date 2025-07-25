@@ -172,22 +172,26 @@
 
             <!-- Équipements -->
             <div class="flex flex-wrap gap-2 text-[12px] text-gray-700 mb-3">
-              <span
-                *ngFor="let eq of announcement.equipments | slice : 0 : 3"
-                class="bg-gray-100 rounded-full px-2 py-1 flex items-center gap-1"
-              >
-                {{ eq.title | equipmentIcon }} {{ eq.title }}
-              </span>
+              @for(eq of (announcement.equipments | slice : 0 : 3);track eq.id){
+                <span
+                  class="bg-gray-100 rounded-full px-2 py-1 flex items-center gap-1"
+                >
+                <!-- Utilisation du pipe custom equipment -->
+                  {{ eq.title | equipmentIcon }} {{ eq.title }}
+                </span>
+              }
+
             </div>
 
             <!-- Services -->
             <div class="flex flex-wrap gap-2 text-[12px] text-gray-700 mb-4">
-              <span
-                *ngFor="let sv of announcement.services | slice : 0 : 2"
-                class="bg-gray-100 rounded-full px-2 py-1 flex items-center gap-1"
-              >
-                {{ sv.title | serviceIcon }} {{ sv.title }}
-              </span>
+              @for(sv of (announcement.services | slice : 0 : 3);track sv.id){
+
+                <span class="bg-gray-100 rounded-full px-2 py-1 flex items-center gap-1">
+                  <!-- Utilisation du pipe custom service -->
+                  {{ sv.title | serviceIcon }} {{ sv.title }}
+                </span>
+              }
             </div>
 
             <!-- Footer : prix + bouton -->
