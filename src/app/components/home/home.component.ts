@@ -19,7 +19,6 @@ import { AnnouncementService } from '../../services/announcement.service';
 })
 export class HomeComponent implements OnInit {
 
-  private httpClient: HttpClient = inject(HttpClient);
   private announcementService: AnnouncementService = inject(AnnouncementService);
 
   title: string = 'Trouvez votre colocation idéale';
