@@ -21,9 +21,11 @@ export class LoginComponent {
   loginForm: FormGroup; // Represente mon formulaire <form>
   formBuilder: FormBuilder = inject(FormBuilder);
   userService: UserService = inject(UserService);
+  
   constructor() {
     // Création du formGroup
     this.loginForm = this.formBuilder.group({
+      //Un formControl pour chaque champ <input> du form
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required]],
     });

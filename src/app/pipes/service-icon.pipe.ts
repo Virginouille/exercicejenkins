@@ -6,6 +6,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 })
 export class ServiceIconPipe implements PipeTransform {
 
+    //retourne un émoji selon le title de l'équipement
   transform(title: string): string {
     return this.emojiMap[title] || 'circle-help'; // fallback si non trouvé
   }

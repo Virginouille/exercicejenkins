@@ -21,7 +21,7 @@ export class AnnouncementDetailComponent implements OnInit{
 	    const id: string|null = this.route.snapshot.paramMap.get('id'); // ✅
 
       if(id && !isNaN(parseInt(id))){
-        // API
+        // TODO  GET /api/announcement/:id
 
       }else{
         // redirection
