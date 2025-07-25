@@ -12,7 +12,6 @@ import Announcement from '../../models/announcement.interface';
 })
 export class AnnouncementDetailComponent implements OnInit{
 
-
   private route : ActivatedRoute = inject(ActivatedRoute); // Récuperer la toute actuelle
 		//Propriété représentant le parmaètre id
   announcement : Announcement|null = null;
@@ -23,7 +22,7 @@ export class AnnouncementDetailComponent implements OnInit{
 
       if(id && !isNaN(parseInt(id))){
         // API
-        
+
       }else{
         // redirection
       }

@@ -8,6 +8,7 @@ import { RouterLink } from '@angular/router';
 import { EquipmentIconPipe } from '../../pipes/equipment-icon.pipe';
 import { ServiceIconPipe } from '../../pipes/service-icon.pipe';
 import User from '../../models/user.interface';
+import { AnnouncementService } from '../../services/announcement.service';
 
 @Component({
   selector: 'app-home',
@@ -19,6 +20,7 @@ import User from '../../models/user.interface';
 export class HomeComponent implements OnInit {
 
   private httpClient: HttpClient = inject(HttpClient);
+  private announcementService: AnnouncementService = inject(AnnouncementService);
 
   title: string = 'Trouvez votre colocation idéale';
   subtitle:string = 'Découvrez des espaces de vie partagés exceptionnels dans toute la France';
@@ -32,14 +34,7 @@ export class HomeComponent implements OnInit {
 
   ngOnInit(): void {
 
-    this.httpClient.get<Announcement[]>(
-      'https://atelier-de-toril.fr/' + 'api/announcements',
-      {
-        headers: {
-          'accept': 'application/json',
-        },
-    }
-    ).subscribe({
+    this.announcementService.getAll().subscribe({
       next: (data) => {
         this.announcements = data;
         console.log(this.announcements);
