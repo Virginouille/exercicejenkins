@@ -95,10 +95,7 @@ export class LoginComponent {
           localStorage.setItem("token",data.token);
           this.apiError = null;
           this.isLoading = false;
-          this.authService.verifyAuth();
-
-          //Redirection Home / profile
-          this.router.navigate(["profile"]);
+          this.authService.verifyAuth("profile");
         },
         error: (error) => {
           console.log("Erreur",error.error.message);

@@ -11,10 +11,23 @@ import { Router, RouterLink } from '@angular/router';
   templateUrl: './profile.component.html',
   styleUrl: './profile.component.css'
 })
-export class ProfileComponent{
+export class ProfileComponent implements OnInit{
 
-  authService: AuthService = inject(AuthService);
-  
+  private authService: AuthService = inject(AuthService);
+  private router : Router = inject(Router); // Pour la redirection
+
   activeTab: string = 'info';
+  user:User|null = null;
 
+    ngOnInit(): void {
+
+        this.authService.user$.subscribe(user => {
+          if(user){
+            this.user = user;
+            console.log('User loaded:', this.user);
+          }else{
+            this.router.navigate(["login"]);
+          }
+        });
+    }
 }

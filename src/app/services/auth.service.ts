@@ -11,7 +11,7 @@ export class AuthService {
 
   private userService: UserService = inject(UserService);
   private router : Router = inject(Router); // Pour la redirection
-  
+
   private userSubject = new BehaviorSubject<User | null>(null);
   public user$ = this.userSubject.asObservable();
 
@@ -30,7 +30,7 @@ export class AuthService {
   }
 
   //Metre des proprietes a certains état pour suivre le statu de connexion
-  verifyAuth(){
+  verifyAuth(redirectRoute: string | null = null){
     //Vérifier si un token est présent dans le storage
     const token:string | null = localStorage.getItem("token");
     if(token){
@@ -44,6 +44,10 @@ export class AuthService {
           //Initialisation du User 
           this.setUser(user);
           console.log("Utilisateur connecté:", user.email);
+          if(redirectRoute){
+          //Redirection Home / profile
+          this.router.navigate([redirectRoute]);
+          }
         },
         error:(error)=>{
           console.log(error);
