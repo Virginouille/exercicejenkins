@@ -6,6 +6,7 @@ import User from '../models/user.interface';
   providedIn: 'root',
 })
 export class UserService {
+  
   private httpClient: HttpClient = inject(HttpClient);
 
   login(user: Partial<User>) {
@@ -17,11 +18,16 @@ export class UserService {
   }
 
   getCurrent(token: string) {
-    return this.httpClient.get('https://atelier-de-toril.fr/' + 'api/me', {
+    return this.httpClient.get<User>('https://atelier-de-toril.fr/' + 'api/me', {
       headers: {
         accept: 'application/json',
         'Authorization': `Bearer ${token}`
-      }, withCredentials: true
+      },
+      withCredentials: true
     });
+  }
+
+  create(user: Partial<User>){
+
   }
 }

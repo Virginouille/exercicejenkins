@@ -32,7 +32,7 @@ export class HomeComponent implements OnInit {
   announcements: Announcement[] = [];
 
   ngOnInit(): void {
-
+  
     this.announcementService.getAll().subscribe({
       next: (data) => {
         this.announcements = data;

@@ -22,9 +22,11 @@ export class AnnouncementDetailComponent implements OnInit{
 
       if(id && !isNaN(parseInt(id))){
         // TODO  GET /api/announcement/:id
+        
 
       }else{
         // redirection
+
       }
 	}
 

@@ -22,3 +22,5 @@ export default interface Announcement {
   equipments: Equipment[]
   reservations: Reservation[]
 }
+
+

@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-nav-bar',
@@ -12,5 +13,7 @@ import { RouterLink } from '@angular/router';
 })
 export class NavBarComponent {
 
+    authService: AuthService = inject(AuthService);
+    
 }
 

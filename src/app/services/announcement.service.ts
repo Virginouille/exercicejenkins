@@ -11,6 +11,7 @@ export class AnnouncementService {
   private apiUrl: string = 'https://atelier-de-toril.fr/api/announcements/';
   private  httpClient: HttpClient = inject(HttpClient);
 
+  test = 10;
   getAll(): Observable<Announcement[]> {
     return this.httpClient.get<Announcement[]>(this.apiUrl,{
       headers: {

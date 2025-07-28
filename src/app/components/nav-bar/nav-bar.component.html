@@ -6,7 +6,8 @@
     </a>
 
     <!-- Liens connexion/inscription -->
-    <div>
+    @if(!authService.user){
+   <div>
       <a
         [routerLink]="['/login']"
         class="text-gray-700 font-semibold hover:text-blue-600 transition mx-2"
@@ -18,5 +19,19 @@
         >S'inscrire</a
       >
     </div>
+    }@else {
+    <div class="flex">
+       <a
+        [routerLink]="['/profile']"
+        class="text-gray-700 font-semibold hover:text-blue-600 transition mx-2"
+        >Profile {{ authService.user.email}} </a
+      >
+      <p
+        (click)="authService.logout()"
+        class="text-gray-700 font-semibold hover:text-blue-600 transition mx-2"
+        >logout</p>
+    </div>
+    }
+ 
   </div>
 </nav>
