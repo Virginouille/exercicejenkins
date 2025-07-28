@@ -9,34 +9,28 @@
     <form [formGroup]="loginForm" (ngSubmit)="monFormEstSoumis()">
       <label
         class="block mb-2 font-semibold text-gray-700"
-        [class.text-red-500]="isFieldInvalid('email')"
         for="email"
       >
         Email
       </label>
-      @if(isFieldInvalid("email")){
-        <p class="text-red-500">{{ getFieldError("email") }}</p>
-      }
+        <app-form-control-error [field]="loginForm.get('email')" [formSubmitted]="formSubmitted" ></app-form-control-error>
       <input
         type="email"
         id="email"
         placeholder="votre.email@example.com"
         formControlName="email"
         class="w-full p-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 mb-6"
-        [class.border-red-500]="isFieldInvalid('email')"
       />
 
       <label
         class="block mb-2 font-semibold text-gray-700"
-        [class.text-red-500]="isFieldInvalid('password')"
         for="password"
       >
         Mot de passe
       </label>
       
-      @if(isFieldInvalid("password")){
-        <p class="text-red-500">{{ getFieldError("password") }}</p>
-      }
+        <app-form-control-error [field]="loginForm.get('password')" [formSubmitted]="formSubmitted" ></app-form-control-error>
+
 
       <div class="flex gap-3">
         <input
@@ -45,9 +39,7 @@
           placeholder="••••••••"
           formControlName="password"
           class="p-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 mb-8"
-          
-          [class.border-red-500]="isFieldInvalid('password')"
-        />
+                  />
         <p (click)="togglePW()" class="text-3xl cursor-pointer">{{ inputPWType === "text" ? "👁️": "🔒"}}</p>
       </div>
 

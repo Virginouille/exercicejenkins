@@ -8,11 +8,12 @@ import {
 } from '@angular/forms';
 import { UserService } from '../../services/user.service';
 import { AuthService } from '../../services/auth.service';
+import { FormControlErrorComponent } from "../form-control-error/form-control-error.component";
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [ReactiveFormsModule, CommonModule],
+  imports: [ReactiveFormsModule, CommonModule, FormControlErrorComponent],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css',
 })
@@ -95,33 +96,5 @@ export class LoginComponent {
     }
   }
 
-  isFieldInvalid(fieldName: string): boolean {
-    const field = this.loginForm.get(fieldName);
-    // Retourne true si TOUTES ces conditions sont vraies :
-    //    champ existe ET champ invalide ET (champ dirty OU touched OU formulaire est soumis)
-    return Boolean(field && field.invalid && field.touched && this.formSubmitted);
-    // Boolean() créer un booléen d'après une donnée falsy ou truthy
-  }
 
-  getFieldError(fieldName: string): string {
-    const field = this.loginForm.get(fieldName);
-
-    // Vérifier si le champ existe et a des erreurs
-    if (field && field.errors) {
-      // field.errors est un objet avec les types d'erreurs comme clés
-      // Ex: { required: true, email: true, minlength: { requiredLength: 6, actualLength: 3 } }
-      if (field.errors['required']) {
-        if(fieldName =="motDePasse")
-        return `Le mot de passe est obligatoire`;
-      }
-      if (field.errors['email']) {
-        return 'Format email invalide';
-      }
-      if (field.errors['minlength']) {
-        // L'erreur minlength contient des infos détaillées
-        return `Minimum ${field.errors['minlength'].requiredLength} caractères`;
-      }
-    }
-    return '';
-  }
 }
