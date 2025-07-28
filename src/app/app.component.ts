@@ -1,6 +1,6 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { NavBarComponent } from "./components/nav-bar/nav-bar.component";
-import { FooterComponent } from "./components/footer/footer.component";
+import { NavBarComponent } from "./components/parts/nav-bar/nav-bar.component";
+import { FooterComponent } from "./components/parts/footer/footer.component";
 import { RouterOutlet } from '@angular/router';
 import { AuthService } from './services/auth.service';
 import User from './models/user.interface';

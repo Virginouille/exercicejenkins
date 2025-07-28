@@ -1,1 +1,251 @@
-<p>Test</p>
+@if (announcement) {
+    <!-- announcement-detail.component.html -->
+<main class="bg-gray-50 font-sans min-h-screen">
+  <!-- Hero Section avec images -->
+  <section class="relative bg-white">
+    <div class="container mx-auto px-6 py-8">
+      <!-- Breadcrumb -->
+
+      <!-- Galerie d'images -->
+      <div class="grid lg:grid-cols-2 gap-4 mb-8">
+        <!-- Image principale -->
+        <div class="relative rounded-2xl overflow-hidden shadow-lg">
+          <img 
+            [src]="announcement.imageCover" 
+            [alt]="announcement.title"
+            class="w-full h-96 lg:h-[500px] object-cover"
+          />
+          <div class="absolute top-4 left-4">
+            <span class="bg-green-500 text-white px-3 py-1 rounded-full text-sm font-medium">
+              Disponible
+            </span>
+          </div>
+        </div>
+
+        <!-- Grille des autres images -->
+        <div class="grid grid-cols-2 gap-4">
+          @for(image of (announcement.images | slice:0:4); track image.id) {
+            <div class="relative rounded-xl overflow-hidden shadow-md cursor-pointer hover:shadow-lg transition">
+              <img 
+                [src]="image.imageUrl" 
+                [alt]="announcement.title"
+                class="w-full h-48 object-cover hover:scale-105 transition-transform duration-300"
+              />
+            </div>
+          }
+          @if(announcement.images.length > 4) {
+            <div class="relative rounded-xl overflow-hidden shadow-md cursor-pointer bg-gray-900 flex items-center justify-center">
+              <div class="text-white text-center">
+                <svg class="w-8 h-8 mx-auto mb-2" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z" clip-rule="evenodd"/>
+                </svg>
+                <span class="text-sm font-medium">+{{ announcement.images.length - 4 }} photos</span>
+              </div>
+            </div>
+          }
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="container mx-auto px-6 pb-20">
+    <div class="grid lg:grid-cols-3 gap-12">
+      <!-- Contenu principal -->
+      <div class="lg:col-span-2 space-y-8">
+        <!-- Titre et infos principales -->
+        <div class="bg-white rounded-2xl p-8 shadow-md">
+          <div class="flex justify-between items-start mb-6">
+            <div>
+              <h1 class="text-4xl font-extrabold text-gray-800 mb-2">{{ announcement.title }}</h1>
+              <div class="flex items-center text-gray-600 mb-4">
+                <svg class="w-5 h-5 mr-2 text-blue-500" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd"/>
+                </svg>
+                <span class="text-lg">{{ announcement.address }}, {{ announcement.city }} {{ announcement.zipcode }}</span>
+              </div>
+            </div>
+            <div class="text-right">
+              <div class="text-3xl font-extrabold text-blue-600 mb-1">
+                {{ announcement.dailyPrice | currency:'EUR':'symbol':'1.0-0':'fr' }}
+              </div>
+              <div class="text-sm text-gray-500">par nuit</div>
+            </div>
+          </div>
+
+          <!-- Infos rapides -->
+          <div class="grid md:grid-cols-3 gap-6 p-6 bg-gradient-to-r from-blue-50 to-purple-50 rounded-xl">
+            <div class="text-center">
+              <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-2">
+                <svg class="w-6 h-6 text-blue-600" fill="currentColor" viewBox="0 0 20 20">
+                  <path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3z"/>
+                </svg>
+              </div>
+              <div class="text-2xl font-bold text-gray-800">{{ announcement.maxClient }}</div>
+              <div class="text-sm text-gray-600">Max personnes</div>
+            </div>
+            <div class="text-center">
+              <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-2">
+                <svg class="w-6 h-6 text-green-600" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clip-rule="evenodd"/>
+                </svg>
+              </div>
+              <div class="text-2xl font-bold text-gray-800">{{ announcement.reservations.length }}</div>
+              <div class="text-sm text-gray-600">Réservations</div>
+            </div>
+            <div class="text-center">
+              <div class="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-2">
+                <svg class="w-6 h-6 text-purple-600" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M3 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clip-rule="evenodd"/>
+                </svg>
+              </div>
+              <div class="text-2xl font-bold text-gray-800">{{ announcement.services.length + announcement.equipments.length }}</div>
+              <div class="text-sm text-gray-600">Commodités</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Description -->
+        <div class="bg-white rounded-2xl p-8 shadow-md">
+          <h2 class="text-2xl font-bold text-gray-800 mb-6">Description</h2>
+          <p class="text-gray-700 leading-relaxed text-lg">{{ announcement.description }}</p>
+        </div>
+
+        <!-- Équipements -->
+        <div class="bg-white rounded-2xl p-8 shadow-md">
+          <h2 class="text-2xl font-bold text-gray-800 mb-6">Équipements disponibles</h2>
+          <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+            @for(equipment of announcement.equipments; track equipment.id) {
+              <div class="flex items-center p-4 bg-gray-50 rounded-xl hover:bg-blue-50 transition">
+                <div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center mr-4">
+                  <span class="text-blue-600">{{ equipment.title | equipmentIcon }}</span>
+                </div>
+                <span class="font-medium text-gray-800">{{ equipment.title }}</span>
+              </div>
+            }
+          </div>
+        </div>
+
+        <!-- Services -->
+        <div class="bg-white rounded-2xl p-8 shadow-md">
+          <h2 class="text-2xl font-bold text-gray-800 mb-6">Services inclus</h2>
+          <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+            @for(service of announcement.services; track service.id) {
+              <div class="flex items-center p-4 bg-gray-50 rounded-xl hover:bg-green-50 transition">
+                <div class="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center mr-4">
+                  <span class="text-green-600">{{ service.title | serviceIcon }}</span>
+                </div>
+                <span class="font-medium text-gray-800">{{ service.title }}</span>
+              </div>
+            }
+          </div>
+        </div>
+
+        <!-- Localisation -->
+        <div class="bg-white rounded-2xl p-8 shadow-md">
+          <h2 class="text-2xl font-bold text-gray-800 mb-6">Localisation</h2>
+          <div class="bg-gray-100 rounded-xl h-64 flex items-center justify-center mb-4">
+            <!-- Ici vous pouvez intégrer Google Maps ou Leaflet -->
+            <div class="text-center text-gray-500">
+              <svg class="w-12 h-12 mx-auto mb-2" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd"/>
+              </svg>
+              <p>Carte interactive</p>
+              <p class="text-sm">Latitude: {{ announcement.lattitude }}, Longitude: {{ announcement.longitude }}</p>
+            </div>
+          </div>
+          <p class="text-gray-600">
+            <strong>Adresse complète:</strong> {{ announcement.address }}, {{ announcement.city }} {{ announcement.zipcode }}
+          </p>
+        </div>
+      </div>
+
+      <!-- Sidebar réservation -->
+      <div class="lg:col-span-1">
+        <div class="sticky top-20">
+          <!-- Card de réservation -->
+          <div class="bg-white rounded-2xl p-6 shadow-lg border border-gray-100">
+            <div class="text-center mb-6">
+              <div class="text-3xl font-extrabold text-blue-600 mb-2">
+                {{ announcement.dailyPrice | currency:'EUR':'symbol':'1.0-0':'fr' }}
+              </div>
+              <div class="text-gray-500">par nuit</div>
+            </div>
+
+            <!-- Formulaire de réservation -->
+            <form class="space-y-4">
+              <div class="grid grid-cols-2 gap-4">
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-2">Arrivée</label>
+                  <input 
+                    type="date" 
+                    class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-400 focus:outline-none"
+                  />
+                </div>
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-2">Départ</label>
+                  <input 
+                    type="date" 
+                    class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-400 focus:outline-none"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">Nombre de personnes</label>
+                <select class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-400 focus:outline-none">
+                  <option>1 personne</option>
+                  <option>2 personnes</option>
+                  <option>3 personnes</option>
+                  <option>{{ announcement.maxClient }} personnes (max)</option>
+                </select>
+              </div>
+
+              <button 
+                type="submit"
+                class="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-semibold py-4 rounded-xl shadow-lg transition-all duration-300 hover:shadow-xl hover:scale-105"
+              >
+                Réserver maintenant
+              </button>
+            </form>
+
+            <div class="mt-6 p-4 bg-gray-50 rounded-xl">
+              <div class="flex justify-between items-center text-sm mb-2">
+                <span class="text-gray-600">Prix par nuit</span>
+                <span class="font-medium">{{ announcement.dailyPrice | currency:'EUR':'symbol':'1.0-0':'fr' }}</span>
+              </div>
+              <div class="flex justify-between items-center text-sm mb-2">
+                <span class="text-gray-600">Frais de service</span>
+                <span class="font-medium">{{ (announcement.dailyPrice * 0.1) | currency:'EUR':'symbol':'1.0-0':'fr' }}</span>
+              </div>
+              <hr class="my-3">
+              <div class="flex justify-between items-center font-bold">
+                <span>Total</span>
+                <span class="text-blue-600">{{ (announcement.dailyPrice * 1.1) | currency:'EUR':'symbol':'1.0-0':'fr' }}</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Info propriétaire -->
+          <div class="bg-white rounded-2xl p-6 shadow-lg border border-gray-100 mt-6">
+            <h3 class="text-lg font-bold text-gray-800 mb-4">Votre hôte</h3>
+            <div class="flex items-center mb-4">
+              <div class="w-16 h-16 bg-gradient-to-r from-blue-400 to-purple-400 rounded-full flex items-center justify-center mr-4">
+                <span class="text-white font-bold text-xl">{{ announcement.owner.firstName?.charAt(0) }}{{ announcement.owner.name?.charAt(0) }}</span>
+              </div>
+              <div>
+                <div class="font-semibold text-gray-800">{{ announcement.owner.firstName }} {{ announcement.owner.name }}</div>
+                <div class="text-sm text-gray-500">Membre depuis 2023</div>
+              </div>
+            </div>
+            <button class="w-full border border-gray-300 hover:border-blue-400 text-gray-700 hover:text-blue-600 font-medium py-3 rounded-xl transition">
+              Contacter l'hôte
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+}@else {
+    <p>Chargement</p>
+}

@@ -8,7 +8,7 @@ import {
 } from '@angular/forms';
 import { UserService } from '../../services/user.service';
 import { AuthService } from '../../services/auth.service';
-import { FormControlErrorComponent } from "../form-control-error/form-control-error.component";
+import { FormControlErrorComponent } from "../parts/form-control-error/form-control-error.component";
 
 @Component({
   selector: 'app-login',
