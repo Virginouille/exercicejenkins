@@ -17,17 +17,19 @@ import User from '../../models/user.interface';
   styleUrl: './login.component.css',
 })
 export class LoginComponent {
-  inputPWType: string = 'password';
-  loginForm: FormGroup; // Represente mon formulaire <form>
   formBuilder: FormBuilder = inject(FormBuilder);
   userService: UserService = inject(UserService);
+
+  formSubmitted: boolean = false;
+  inputPWType: string = 'password';
+  loginForm: FormGroup; // Represente mon formulaire <form>
 
   constructor() {
     // Création du formGroup
     this.loginForm = this.formBuilder.group({
       //Un formControl pour chaque champ <input> du form
       email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required]],
+      password: ['', [Validators.required,Validators.minLength(80)]],
     });
   }
 
@@ -40,13 +42,30 @@ export class LoginComponent {
   }
 
   monFormEstSoumis() {
-    // console.log("MON FORM EST SOUMIS");
-    // console.log("loginForm.valid ",this.loginForm.valid);
-    // console.log("Toutes les valeurs des control du groupe -> loginForm.value ",this.loginForm.value);
-    // console.log("Recuperer un seul control avec loginForm.get('email')",this.loginForm.get("password"));
-    // console.log("Recuperer la validité d'un control avec loginForm.get('password').valid",this.loginForm.get("email")?.valid);
-    // console.log("Recuperer les erreurs d'un control avec loginForm.get('password').errors",this.loginForm.get("password")?.errors);
-    // console.log("Recuperer un seul control avec loginForm.get('password')",this.loginForm.get("password"));
+    console.log('MON FORM EST SOUMIS');
+    console.log('loginForm.valid ', this.loginForm.valid);
+    console.log(
+      'Toutes les valeurs des control du groupe -> loginForm.value ',
+      this.loginForm.value
+    );
+    console.log(
+      "Recuperer un seul control avec loginForm.get('email')",
+      this.loginForm.get('email')
+    );
+    console.log(
+      "Recuperer la validité d'un control avec loginForm.get('password').valid",
+      this.loginForm.get('email')?.valid
+    );
+    console.log(
+      "Recuperer les erreurs d'un control avec loginForm.get('password').errors",
+      this.loginForm.get('password')?.errors
+    );
+    console.log(
+      "Recuperer un seul control avec loginForm.get('password')",
+      this.loginForm.get('password')
+    );
+
+    this.formSubmitted = true;
 
     if (this.loginForm.valid) {
       console.log(
@@ -57,13 +76,41 @@ export class LoginComponent {
         next: (data: any) => {
           //Récupération du token
           console.log(data);
-          // Stocker le token en localStorage
-          
+          // Stocker le token en localStorage ( meme syntaxe qu'en JS )
         },
         error: (error) => {
           console.log(error.error.message);
         },
       });
     }
+  }
+
+  isFieldInvalid(fieldName: string): boolean {
+    const field = this.loginForm.get(fieldName);
+    // Retourne true si TOUTES ces conditions sont vraies :
+    //    champ existe ET champ invalide ET (champ dirty OU touched OU formulaire est soumis)
+    return Boolean(field && field.invalid && this.formSubmitted);
+    // Boolean() créer un booléen d'après une donnée falsy ou truthy
+  }
+
+  getFieldError(fieldName: string): string {
+    const field = this.loginForm.get(fieldName);
+
+    // Vérifier si le champ existe et a des erreurs
+    if (field && field.errors) {
+      // field.errors est un objet avec les types d'erreurs comme clés
+      // Ex: { required: true, email: true, minlength: { requiredLength: 6, actualLength: 3 } }
+      if (field.errors['required']) {
+        return `${fieldName} est obligatoire`;
+      }
+      if (field.errors['email']) {
+        return 'Format email invalide';
+      }
+      if (field.errors['minlength']) {
+        // L'erreur minlength contient des infos détaillées
+        return `Minimum ${field.errors['minlength'].requiredLength} caractères`;
+      }
+    }
+    return '';
   }
 }
