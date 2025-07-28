@@ -7,13 +7,13 @@
     </h2>
 
     <form [formGroup]="loginForm" (ngSubmit)="monFormEstSoumis()">
-      <label
-        class="block mb-2 font-semibold text-gray-700"
-        for="email"
-      >
+      <label class="block mb-2 font-semibold text-gray-700" for="email">
         Email
       </label>
-        <app-form-control-error [field]="loginForm.get('email')" [formSubmitted]="formSubmitted" ></app-form-control-error>
+      <app-form-control-error
+        [field]="loginForm.get('email')"
+        [formSubmitted]="formSubmitted"
+      ></app-form-control-error>
       <input
         type="email"
         id="email"
@@ -22,15 +22,14 @@
         class="w-full p-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 mb-6"
       />
 
-      <label
-        class="block mb-2 font-semibold text-gray-700"
-        for="password"
-      >
+      <label class="block mb-2 font-semibold text-gray-700" for="password">
         Mot de passe
       </label>
-      
-        <app-form-control-error [field]="loginForm.get('password')" [formSubmitted]="formSubmitted" ></app-form-control-error>
 
+      <app-form-control-error
+        [field]="loginForm.get('password')"
+        [formSubmitted]="formSubmitted"
+      ></app-form-control-error>
 
       <div class="flex gap-3">
         <input
@@ -39,16 +38,24 @@
           placeholder="••••••••"
           formControlName="password"
           class="p-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 mb-8"
-                  />
-        <p (click)="togglePW()" class="text-3xl cursor-pointer">{{ inputPWType === "text" ? "👁️": "🔒"}}</p>
+        />
+        <p (click)="togglePW()" class="text-3xl cursor-pointer">
+          {{ inputPWType === "text" ? "👁️" : "🔒" }}
+        </p>
       </div>
-
+      @if (loading) {
+      <p>Chargement...</p>
+      }@else {
       <button
         type="submit"
         class="w-full bg-blue-600 text-white py-3 rounded-lg font-bold hover:bg-blue-700 transition"
       >
         Se connecter
       </button>
+      }
+      @if(apiError){
+        <p class="text-red-500">{{apiError}}</p>
+      }
     </form>
 
     <p class="mt-6 text-center text-gray-600">

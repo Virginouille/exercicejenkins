@@ -25,6 +25,9 @@ export class LoginComponent {
   formSubmitted: boolean = false;
   inputPWType: string = 'password';
   loginForm: FormGroup; // Represente mon formulaire <form>
+  loading: boolean = false;
+
+  apiError: string|null = null;
 
   constructor() {
     // Création du formGroup
@@ -76,6 +79,7 @@ export class LoginComponent {
     this.formSubmitted = true;
 
     if (this.loginForm.valid) {
+      this.loading = true;
       console.log(
         "Form valide je peux envoyer la requete de login a l'api /auth"
       );
@@ -87,10 +91,17 @@ export class LoginComponent {
           console.log(data.token);
           // Stocker le token en localStorage ( meme syntaxe qu'en JS )
           localStorage.setItem("token",data.token);
+          this.apiError = null;
+          this.loading = false;
           this.authService.verifyAuth();
+
+          //Redirection Home / profile
         },
         error: (error) => {
           console.log("Erreur",error.error.message);
+          this.loading = false;
+          this.apiError = error.error.message;
+
         },
       });
     }
