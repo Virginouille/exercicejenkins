@@ -1,6 +1,8 @@
 import { inject, Injectable } from '@angular/core';
 import { UserService } from './user.service';
 import User from '../models/user.interface';
+import { BehaviorSubject } from 'rxjs';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -8,8 +10,20 @@ import User from '../models/user.interface';
 export class AuthService {
 
   private userService: UserService = inject(UserService);
+  private router : Router = inject(Router); // Pour la redirection
+  
+  private userSubject = new BehaviorSubject<User | null>(null);
+  public user$ = this.userSubject.asObservable();
 
-  user: User|null = null;
+  
+  get user(): User | null {
+    return this.userSubject.value;
+  }
+
+  // Méthode pour mettre à jour l'utilisateur
+  setUser(user: User | null): void {
+    this.userSubject.next(user);
+  }
 
   constructor() { 
     this.verifyAuth();
@@ -28,7 +42,7 @@ export class AuthService {
           const user: User = data;
           console.log(user);
           //Initialisation du User 
-          this.user = user;
+          this.setUser(user);
           console.log("Utilisateur connecté:", user.email);
         },
         error:(error)=>{
@@ -38,14 +52,16 @@ export class AuthService {
         }
       });
     }else{
-      this.user = null;
+      this.setUser(null);
     }
   }
 
   logout(){
     // Suppression du token qui n'a pas fonctionné pour /me
     localStorage.removeItem("token");
-    this.user = null;
+    this.setUser(null);
+    this.router.navigate(["login"]);
+
   }
 
 }

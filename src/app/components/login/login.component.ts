@@ -9,6 +9,7 @@ import {
 import { UserService } from '../../services/user.service';
 import { AuthService } from '../../services/auth.service';
 import { FormControlErrorComponent } from "../parts/form-control-error/form-control-error.component";
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -18,14 +19,15 @@ import { FormControlErrorComponent } from "../parts/form-control-error/form-cont
   styleUrl: './login.component.css',
 })
 export class LoginComponent {
-  formBuilder: FormBuilder = inject(FormBuilder);
-  userService: UserService = inject(UserService);
-  authService: AuthService = inject(AuthService);
+  private formBuilder: FormBuilder = inject(FormBuilder);
+  private userService: UserService = inject(UserService);
+  private authService: AuthService = inject(AuthService);
+  private router : Router = inject(Router); // Pour la redirection
 
   formSubmitted: boolean = false;
   inputPWType: string = 'password';
   loginForm: FormGroup; // Represente mon formulaire <form>
-  loading: boolean = false;
+  isLoading: boolean = false;
 
   apiError: string|null = null;
 
@@ -79,7 +81,7 @@ export class LoginComponent {
     this.formSubmitted = true;
 
     if (this.loginForm.valid) {
-      this.loading = true;
+      this.isLoading = true;
       console.log(
         "Form valide je peux envoyer la requete de login a l'api /auth"
       );
@@ -92,14 +94,15 @@ export class LoginComponent {
           // Stocker le token en localStorage ( meme syntaxe qu'en JS )
           localStorage.setItem("token",data.token);
           this.apiError = null;
-          this.loading = false;
+          this.isLoading = false;
           this.authService.verifyAuth();
 
           //Redirection Home / profile
+          this.router.navigate(["profile"]);
         },
         error: (error) => {
           console.log("Erreur",error.error.message);
-          this.loading = false;
+          this.isLoading = false;
           this.apiError = error.error.message;
 
         },

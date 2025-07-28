@@ -15,5 +15,6 @@ export class NavBarComponent {
 
     authService: AuthService = inject(AuthService);
     
+    
 }
 

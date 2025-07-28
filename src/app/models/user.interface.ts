@@ -14,7 +14,6 @@ export default interface User {
   createdAt: string
   birthDate: string
   userIdentifier: string
-  verified: boolean
   receivedMessages: Message[]
   sendMessages: Message[]
   reservations: Reservation[]
