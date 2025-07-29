@@ -12,7 +12,8 @@ export class AnnouncementService {
   private  httpClient: HttpClient = inject(HttpClient);
 
   getAll(filters: string|null = null): Observable<Announcement[]> {
-    return this.httpClient.get<Announcement[]>(this.apiUrl + "?" + filters,{
+    return this.httpClient.get<Announcement[]>(this.apiUrl,{
+      params: {filters},
       headers: {
         "Accept":"application/json"
       }
