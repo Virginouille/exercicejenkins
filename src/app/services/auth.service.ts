@@ -12,15 +12,17 @@ export class AuthService {
   private userService: UserService = inject(UserService);
   private router : Router = inject(Router); // Pour la redirection
 
+  //Utilisation d'un observable pour partager la prop User aux autre composants
   private userSubject = new BehaviorSubject<User | null>(null);
   public user$ = this.userSubject.asObservable();
-
+  //Le $ en fin de variable est une convention pour identifier les data observable
   
+  //Getter pour la simplicité d'utilisation
   get user(): User | null {
     return this.userSubject.value;
   }
 
-  // Méthode pour mettre à jour l'utilisateur
+  // Setter pour mettre à jour l'observable utilisateur
   setUser(user: User | null): void {
     this.userSubject.next(user);
   }
@@ -43,7 +45,7 @@ export class AuthService {
           console.log(user);
           //Initialisation du User 
           this.setUser(user);
-          console.log("Utilisateur connecté:", user.email);
+
           if(redirectRoute){
           //Redirection Home / profile
           this.router.navigate([redirectRoute]);
@@ -65,7 +67,6 @@ export class AuthService {
     localStorage.removeItem("token");
     this.setUser(null);
     this.router.navigate(["login"]);
-
   }
 
 }
