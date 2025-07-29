@@ -44,17 +44,15 @@
         </p>
       </div>
       @if (isLoading) {
-      <p>Chargement...</p>
-      }@else {
+      <app-custom-loader></app-custom-loader> }@else {
       <button
         type="submit"
         class="w-full bg-blue-600 text-white py-3 rounded-lg font-bold hover:bg-blue-700 transition"
       >
         Se connecter
       </button>
-      }
-      @if(apiError){
-        <p class="text-red-500">{{apiError}}</p>
+      } @if(apiError){
+      <p class="text-red-500 m-5">{{ apiError }}</p>
       }
     </form>
 

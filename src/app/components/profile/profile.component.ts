@@ -3,11 +3,12 @@ import { AuthService } from '../../services/auth.service';
 import User from '../../models/user.interface';
 import { CommonModule } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
+import { CustomLoaderComponent } from "../parts/custom-loader/custom-loader.component";
 
 @Component({
   selector: 'app-profile',
   standalone: true,
-  imports: [CommonModule,RouterLink],
+  imports: [CommonModule, RouterLink, CustomLoaderComponent],
   templateUrl: './profile.component.html',
   styleUrl: './profile.component.css'
 })

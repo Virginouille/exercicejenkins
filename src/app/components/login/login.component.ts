@@ -10,11 +10,12 @@ import { UserService } from '../../services/user.service';
 import { AuthService } from '../../services/auth.service';
 import { FormControlErrorComponent } from "../parts/form-control-error/form-control-error.component";
 import { Router } from '@angular/router';
+import { CustomLoaderComponent } from "../parts/custom-loader/custom-loader.component";
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [ReactiveFormsModule, CommonModule, FormControlErrorComponent],
+  imports: [ReactiveFormsModule, CommonModule, FormControlErrorComponent, CustomLoaderComponent],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css',
 })
@@ -94,7 +95,6 @@ export class LoginComponent {
           // Stocker le token en localStorage ( meme syntaxe qu'en JS )
           localStorage.setItem("token",data.token);
           this.apiError = null;
-          this.isLoading = false;
           this.authService.verifyAuth("profile");
         },
         error: (error) => {

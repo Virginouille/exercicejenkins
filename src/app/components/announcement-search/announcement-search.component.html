@@ -21,7 +21,6 @@
             id="city"
             type="text"
             formControlName="city"
-            placeholder="Rechercher par ville..."
             class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
           />
         </div>
@@ -36,7 +35,6 @@
           <input
             id="maxPrice"
             type="number"
-            placeholder="Prix maximum..."
             formControlName="dailyPrice[lte]"
             min="0"
             class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
@@ -63,13 +61,13 @@
         <div class="flex gap-3">
           <button
             type="submit"
-            class="flex-1 bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors duration-200"
+            class="flex-1 bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 duration-200"
           >
             Rechercher
           </button>
           <button
             (click)="resetForm()"
-            class="flex-1 bg-red-600 text-white py-2 px-4 rounded-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 transition-colors duration-200"
+            class="bg-red-600 text-white py-2 px-4 rounded-md hover:bg-red-700 focus:outline-none focus:ring-2  transition-colors duration-200"
           >
             Réinitialiser
           </button>
@@ -85,7 +83,8 @@
         </h3>
 
         <div class="space-y-4">
-          @for(announcement of results; track announcement.id) {
+          @if(!loadingResults){ @for(announcement of results; track
+          announcement.id) {
           <div
             class="bg-white rounded-lg shadow-sm border border-gray-200 p-4 hover:shadow-md transition-shadow duration-200 cursor-pointer"
           >
@@ -173,6 +172,11 @@
             <p class="mt-1 text-sm text-gray-500">
               Essayez de modifier vos critères de recherche.
             </p>
+          </div>
+          } }@else {
+          <div class="text-center bg-white p-10 rounded-lg shadow-md">
+            <p class="mt-1 text-2xl">Recherche des meilleures offres...</p>
+            <app-custom-loader></app-custom-loader>
           </div>
           }
         </div>

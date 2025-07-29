@@ -19,32 +19,12 @@
           >
             {{ subtitle }}
           </p>
-
-          <!-- Barre de recherche -->
-          <div class="bg-white rounded-3xl p-6 shadow-2xl">
-            <div class="grid md:grid-cols-3 gap-4">
-              <input
-                type="text"
-                placeholder="Ville ou quartier"
-                class="px-5 py-3 border border-gray-300 rounded-xl focus:ring-4 focus:ring-blue-400 focus:outline-none text-gray-800 placeholder-gray-400 transition"
-              />
-              <select
-                class="px-5 py-3 border border-gray-300 rounded-xl focus:ring-4 focus:ring-blue-400 focus:outline-none text-gray-800 transition"
-              >
-                <option disabled selected>Budget max</option>
-                <option>500€</option>
-                <option>700€</option>
-                <option>900€</option>
-                <option>1200€+</option>
-              </select>
-              <button
-                class="bg-gradient-to-r from-purple-600 to-teal-500 hover:from-purple-700 hover:to-teal-600 text-white font-semibold rounded-xl shadow-lg transition-transform hover:scale-105"
+            <button [routerLink]="['/search']"
+                class="px-5 py-3 bg-gradient-to-r from-purple-600 to-teal-500 hover:from-purple-700 hover:to-teal-600 text-white font-semibold rounded-xl shadow-lg transition-transform hover:scale-105"
               >
                 Rechercher
-              </button>
-            </div>
-          </div>
-
+            </button>
+        
           <!-- Statistiques -->
           <div class="grid grid-cols-3 gap-8 pt-8">
             <div class="text-center">
@@ -123,7 +103,9 @@
           </p>
         </div>
       </header>
-
+      @if(loadingAnnouncement){
+        <app-custom-loader></app-custom-loader>
+      }@else {
       <div class="grid md:grid-cols-3 lg:grid-cols-4 gap-7">
         @for(announcement of announcements; track announcement.id){
         <div
@@ -217,8 +199,11 @@
           </div>
         </div>
 
+        }@empty {
+          <p>Pas de résultats</p>
         }
       </div>
+    }
     </div>
   </section>
 </main>

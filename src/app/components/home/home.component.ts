@@ -9,11 +9,12 @@ import { EquipmentIconPipe } from '../../pipes/equipment-icon.pipe';
 import { ServiceIconPipe } from '../../pipes/service-icon.pipe';
 import User from '../../models/user.interface';
 import { AnnouncementService } from '../../services/announcement.service';
+import { CustomLoaderComponent } from "../parts/custom-loader/custom-loader.component";
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule,RouterLink,ServiceIconPipe,EquipmentIconPipe],
+  imports: [CommonModule, RouterLink, ServiceIconPipe, EquipmentIconPipe, CustomLoaderComponent],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })
@@ -31,12 +32,16 @@ export class HomeComponent implements OnInit {
   colocatairesActifs:number  = 3829;
   announcements: Announcement[] = [];
 
+  loadingAnnouncement:boolean = true;
+
+
   ngOnInit(): void {
   
     this.announcementService.getAll().subscribe({
       next: (data) => {
         this.announcements = data;
         console.log(this.announcements);
+        this.loadingAnnouncement = false;
       }
 
     });
