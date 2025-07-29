@@ -1,37 +1,51 @@
 <nav class="min-h-[10vh] bg-white shadow-md sticky top-0 z-50">
   <div class="container mx-auto px-6 py-4 flex justify-between items-center">
     <!-- Logo -->
-    <a [routerLink]="['/home']" class="text-2xl font-extrabold text-blue-600 hover:text-blue-800 transition">
+    <a
+      [routerLink]="['/home']"
+      class="text-2xl font-extrabold text-blue-600 hover:text-blue-800 transition"
+    >
       CoLiving
     </a>
 
+    <a
+      [routerLink]="['/search']"
+      routerLinkActive="activeLink"
+      class="text-gray-700 font-semibold hover:text-blue-600 transition mx-2"
+      >Recherche</a
+    >
+
     <!-- Liens connexion/inscription -->
     @if(!authService.user){
-   <div>
+    <div>
       <a
         [routerLink]="['/login']"
+        routerLinkActive="activeLink"
         class="text-gray-700 font-semibold hover:text-blue-600 transition mx-2"
         >Connexion</a
       >
       <a
         [routerLink]="['/register']"
+        routerLinkActive="activeLink"
         class="text-gray-700 font-semibold hover:text-blue-600 transition mx-2"
         >S'inscrire</a
       >
     </div>
     }@else {
     <div class="flex">
-       <a
+      <a
         [routerLink]="['/profile']"
+        routerLinkActive="activeLink"
         class="text-gray-700 font-semibold hover:text-blue-600 transition mx-2"
-        >Profile {{ authService.user.email}} </a
-      >
+        >Profile {{ authService.user.email }}
+      </a>
       <p
         (click)="authService.logout()"
         class="text-gray-700 font-semibold hover:text-blue-600 transition mx-2"
-        >logout</p>
+      >
+        Logout
+      </p>
     </div>
     }
- 
   </div>
 </nav>
