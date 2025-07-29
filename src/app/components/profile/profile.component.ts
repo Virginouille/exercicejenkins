@@ -20,15 +20,33 @@ export class ProfileComponent implements OnInit{
   activeTab: string = 'info';
   user:User|null = null;
 
+  authInitialized: boolean = false;
+
     ngOnInit(): void {
 
-        this.authService.user$.subscribe(user => {
-          if(user){
-            this.user = user;
-            console.log('User loaded:', this.user);
-          }else{
-            this.router.navigate(["login"]);
+      this.authService.initialized$.subscribe(initialized => {
+          this.authInitialized = initialized;
+          if(initialized){
+            console.log('Auth init:', this.authInitialized);
+            //Chargement du user une fois l'auth initialisé 
+            this.loadUser();
           }
+          
         });
     }
+
+    //méthode pour charger le User
+    private loadUser(): void {
+
+    this.authService.user$.subscribe(user => {
+      if (user) {
+        //User connécté
+        this.user = user;
+        console.log('User loaded:', this.user);
+      } else {
+        //Pas de User -> redirection
+        this.router.navigate(["login"]);
+      }
+    });
+  }
 }

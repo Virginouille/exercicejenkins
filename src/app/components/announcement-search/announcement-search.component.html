@@ -1,19 +1,18 @@
-<div class="flex h-screen">
-  <!-- Section gauche: Formulaire + Résultats (50%) -->
-  <div class="w-1/2 flex flex-col">
-    <!-- Formulaire de recherche -->
-    <div class="bg-white shadow-sm border-b border-gray-200 p-6">
-      <h2 class="text-xl font-semibold mb-4 text-gray-800">
+<div class="h-[90vh] flex flex-col">
+  <!-- Barre de recherche horizontale en haut -->
+  <div class="bg-white shadow-sm border-b border-gray-200 p-4">
+    <div class="flex justify-evenly">
+      <h2 class="text-xl font-semibold m-4 text-gray-800">
         Rechercher une annonce
       </h2>
 
       <form
         [formGroup]="searchForm"
         (ngSubmit)="submitSearch()"
-        class="space-y-4"
+        class="flex gap-4 items-end"
       >
         <!-- Ville -->
-        <div>
+        <div class="flex-1">
           <label for="city" class="block text-sm font-medium text-gray-700 mb-1"
             >Ville</label
           >
@@ -21,77 +20,368 @@
             id="city"
             type="text"
             formControlName="city"
+            placeholder="Ex: Paris, Lyon..."
             class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
           />
         </div>
 
         <!-- Prix maximum -->
-        <div>
+        <div class="flex-1">
           <label
             for="maxPrice"
             class="block text-sm font-medium text-gray-700 mb-1"
-            >Prix maximum (€/jour)</label
+            >Prix max (€/jour)</label
           >
           <input
             id="maxPrice"
             type="number"
             formControlName="dailyPrice[lte]"
+            placeholder="500"
             min="0"
             class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
           />
         </div>
 
         <!-- Nombre de clients -->
-        <div>
+        <div class="flex-1">
           <label
             for="maxClient"
             class="block text-sm font-medium text-gray-700 mb-1"
-            >Nombre maximum de locataires</label
+            >Nb locataires max</label
           >
           <input
             id="maxClient"
             type="number"
             min="1"
+            placeholder="8"
             formControlName="maxClient[lte]"
             class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
           />
         </div>
 
         <!-- Boutons -->
-        <div class="flex gap-3">
+        <div class="flex gap-2">
           <button
             type="submit"
-            class="flex-1 bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 duration-200"
+            class="bg-blue-600 text-white py-2 px-6 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors duration-200 font-medium"
           >
             Rechercher
           </button>
           <button
+            type="button"
             (click)="resetForm()"
-            class="bg-red-600 text-white py-2 px-4 rounded-md hover:bg-red-700 focus:outline-none focus:ring-2  transition-colors duration-200"
+            class="bg-gray-500 text-white py-2 px-4 rounded-md hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-500 transition-colors duration-200"
           >
-            Réinitialiser
+            Reset
           </button>
         </div>
       </form>
     </div>
+  </div>
 
-    <!-- Liste des résultats -->
-    <div class="flex-1 overflow-y-auto bg-gray-50">
-      <div class="p-4">
-        <h3 class="text-lg font-semibold mb-4 text-gray-800">
-          Résultats ({{ results.length }})
-        </h3>
-
-        <div class="space-y-4">
-          @if(!loadingResults){ @for(announcement of results; track
-          announcement.id) {
-          <div
-            class="bg-white rounded-lg shadow-sm border border-gray-200 p-4 hover:shadow-md transition-shadow duration-200 cursor-pointer"
+  <!-- Contenu principal : Résultats + Map -->
+  <div class="flex flex-1 overflow-hidden">
+    <!-- Section gauche: Résultats (50%) -->
+    <div class="w-1/2 flex flex-col bg-gray-50">
+      @if(!loadingResults) { @if(selectedAnnouncement) {
+      <!-- Vue détaillée de l'annonce -->
+      <div class="bg-white h-full flex flex-col">
+        <!-- Header sticky avec boutons -->
+        <div
+          class="sticky top-0 bg-white border-b border-gray-200 p-4 z-10 flex justify-between items-center shadow-sm"
+        >
+          <button
+            (click)="returnToSearch()"
+            class="flex items-center text-blue-600 hover:text-blue-800 font-medium transition-colors"
           >
-            <!-- Image et infos principales -->
+            <svg
+              class="w-5 h-5 mr-2"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M15 19l-7-7 7-7"
+              ></path>
+            </svg>
+            Retour aux résultats
+          </button>
+
+          <button
+            class="bg-blue-600 text-white py-2 px-6 rounded-lg hover:bg-blue-700 transition-colors font-semibold"
+          >
+            Réserver maintenant
+          </button>
+        </div>
+
+        <!-- Contenu scrollable -->
+        <div class="flex-1 overflow-y-auto">
+          <!-- Infos principales -->
+          <div class="p-6 border-b border-gray-200">
+            <div class="flex justify-between items-start mb-4">
+              <div class="flex-1 pr-4">
+                <h1 class="text-2xl font-bold text-gray-900 mb-3">
+                  {{ selectedAnnouncement.title }}
+                </h1>
+
+                <!-- Localisation -->
+                <div class="flex items-center text-gray-600 mb-3">
+                  <svg
+                    class="w-5 h-5 mr-2 text-gray-500"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                  >
+                    <path
+                      fill-rule="evenodd"
+                      d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z"
+                      clip-rule="evenodd"
+                    ></path>
+                  </svg>
+                  <span
+                    >{{ selectedAnnouncement.address }},
+                    {{ selectedAnnouncement.city }}
+                    {{ selectedAnnouncement.zipcode }}</span
+                  >
+                </div>
+
+                <!-- Capacité -->
+                <div class="flex items-center text-gray-600">
+                  <svg
+                    class="w-5 h-5 mr-2 text-gray-500"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                  >
+                    <path
+                      d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3z"
+                    ></path>
+                  </svg>
+                  <span
+                    >Jusqu'à
+                    {{ selectedAnnouncement.maxClient }} locataires</span
+                  >
+                </div>
+              </div>
+
+              <!-- Prix -->
+              <div class="text-right">
+                <div class="text-3xl font-bold text-blue-600 mb-1">
+                  {{ selectedAnnouncement.dailyPrice }}€
+                </div>
+                <div class="text-sm text-gray-500">par jour</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Images -->
+          <div class="p-6 border-b border-gray-200">
+            <!-- Image principale -->
+            <div
+              class="w-full h-48 bg-gray-200 rounded-lg overflow-hidden mb-4"
+            >
+              @if(selectedAnnouncement.imageCover) {
+              <img
+                [src]="selectedAnnouncement.imageCover"
+                [alt]="selectedAnnouncement.title"
+                class="w-full h-full object-cover"
+              />
+              } @else {
+              <div
+                class="w-full h-full flex items-center justify-center text-gray-400"
+              >
+                <svg class="w-12 h-12" fill="currentColor" viewBox="0 0 20 20">
+                  <path
+                    fill-rule="evenodd"
+                    d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z"
+                    clip-rule="evenodd"
+                  ></path>
+                </svg>
+              </div>
+              }
+            </div>
+
+            <!-- Galerie d'images -->
+            @if(selectedAnnouncement.images &&
+            selectedAnnouncement.images.length > 0) {
+            <div class="grid grid-cols-4 gap-2">
+              @for(image of selectedAnnouncement.images; track image.id) {
+              <div
+                class="aspect-square bg-gray-200 rounded-lg overflow-hidden cursor-pointer hover:opacity-75 transition-opacity"
+              >
+                <img
+                  [src]="image.imageUrl"
+                  [alt]="selectedAnnouncement.title"
+                  class="w-full h-full object-cover"
+                />
+              </div>
+              }
+            </div>
+            }
+          </div>
+
+          <!-- Description -->
+          <div class="p-6 border-b border-gray-200">
+            <h2 class="text-lg font-semibold text-gray-900 mb-3">
+              Description
+            </h2>
+            <p class="text-gray-700 leading-relaxed">
+              {{ selectedAnnouncement.description }}
+            </p>
+          </div>
+
+          <!-- Services et Équipements côte à côte -->
+          <div class="p-6 border-b border-gray-200">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              <!-- Services -->
+              @if(selectedAnnouncement.services &&
+              selectedAnnouncement.services.length > 0) {
+              <div>
+                <h2
+                  class="text-lg font-semibold text-gray-900 mb-4 flex items-center"
+                >
+                  <span class="w-2 h-2 bg-green-500 rounded-full mr-2"></span>
+                  Services inclus
+                </h2>
+                <div class="space-y-3">
+                  @for(service of selectedAnnouncement.services; track
+                  service.id) {
+                  <div
+                    class="flex items-start space-x-3 p-3 bg-green-50 rounded-lg"
+                  >
+                    <div
+                      class="flex-shrink-0 w-6 h-6 bg-green-500 rounded-full flex items-center justify-center"
+                    >
+                      <p>{{ service.title | serviceIcon }}</p>
+                    </div>
+                    <div class="flex-1">
+                      <h3 class="font-medium text-gray-900 text-sm">
+                        {{ service.title }}
+                      </h3>
+                      <p class="text-xs text-gray-600 mt-1">
+                        {{ service.description }}
+                      </p>
+                    </div>
+                  </div>
+                  }
+                </div>
+              </div>
+              }
+
+              <!-- Équipements -->
+              @if(selectedAnnouncement.equipments &&
+              selectedAnnouncement.equipments.length > 0) {
+              <div>
+                <h2
+                  class="text-lg font-semibold text-gray-900 mb-4 flex items-center"
+                >
+                  <span class="w-2 h-2 bg-blue-500 rounded-full mr-2"></span>
+                  Équipements
+                </h2>
+                <div class="space-y-3">
+                  @for(equipment of selectedAnnouncement.equipments; track
+                  equipment.id) {
+                  <div
+                    class="flex items-start space-x-3 p-3 bg-blue-50 rounded-lg"
+                  >
+                    <div
+                      class="flex-shrink-0 w-6 h-6 bg-blue-500 rounded-full flex items-center justify-center"
+                    >
+                      <p>{{ equipment.title | equipmentIcon }}</p>
+                    </div>
+                    <div class="flex-1">
+                      <h3 class="font-medium text-gray-900 text-sm">
+                        {{ equipment.title }}
+                      </h3>
+                      <p class="text-xs text-gray-600 mt-1">
+                        {{ equipment.description }}
+                      </p>
+                    </div>
+                  </div>
+                  }
+                </div>
+              </div>
+              }
+            </div>
+          </div>
+
+          <!-- Propriétaire -->
+          <div class="p-6 border-b border-gray-200">
+            <h2 class="text-lg font-semibold text-gray-900 mb-4">
+              Propriétaire
+            </h2>
+            <div class="flex items-center space-x-4 p-4 bg-gray-50 rounded-lg">
+              <div
+                class="w-12 h-12 bg-gradient-to-br from-blue-400 to-blue-600 rounded-full flex items-center justify-center"
+              >
+                <span class="text-white font-semibold text-lg">{{
+                  selectedAnnouncement.owner.name?.charAt(0).toUpperCase()
+                }}</span>
+              </div>
+              <div class="flex-1">
+                <h3 class="font-semibold text-gray-900">
+                  {{ selectedAnnouncement.owner.name }}
+                </h3>
+                <p class="text-sm text-gray-600">
+                  {{ selectedAnnouncement.owner.email }}
+                </p>
+              </div>
+              <button
+                class="px-4 py-2 bg-blue-600 text-white rounded-md text-sm font-medium hover:bg-blue-700 transition-colors"
+              >
+                Contacter
+              </button>
+            </div>
+          </div>
+
+          <!-- Réservations -->
+          @if(selectedAnnouncement.reservations &&
+          selectedAnnouncement.reservations.length > 0) {
+          <div class="p-6">
+            <h2 class="text-lg font-semibold text-gray-900 mb-4">
+              Périodes réservées
+            </h2>
+            <div class="bg-amber-50 border border-amber-200 rounded-lg p-4">
+              <div class="space-y-2">
+                @for(reservation of selectedAnnouncement.reservations; track
+                reservation.id) {
+                <div class="flex justify-between items-center text-sm">
+                  <span class="text-amber-800">
+                    {{ reservation.startDate | date : "dd/MM/yyyy" }} -
+                    {{ reservation.endDate | date : "dd/MM/yyyy" }}
+                  </span>
+                  <span
+                    class="px-2 py-1 bg-amber-200 text-amber-800 rounded text-xs font-medium"
+                  >
+                    {{ reservation.status }}
+                  </span>
+                </div>
+                }
+              </div>
+            </div>
+          </div>
+          }
+        </div>
+      </div>
+      } @else {
+      <!-- Liste des résultats -->
+      <div class="h-full flex flex-col">
+        <div class="p-4 bg-white border-b border-gray-200">
+          <h3 class="text-lg font-semibold text-gray-800">
+            Résultats de recherche ({{ results.length }})
+          </h3>
+        </div>
+
+        <div class="flex-1 overflow-y-auto p-4 space-y-4">
+          @for(announcement of results; track announcement.id) {
+          <div
+            (click)="detailAnnouncement(announcement)"
+            class="bg-white rounded-lg shadow-sm border border-gray-200 p-4 hover:shadow-md transition-all duration-200 cursor-pointer hover:border-blue-300"
+          >
             <div class="flex gap-4">
               <div
-                class="w-24 h-24 bg-gray-200 rounded-lg overflow-hidden flex-shrink-0"
+                class="w-20 h-20 bg-gray-200 rounded-lg overflow-hidden flex-shrink-0"
               >
                 @if(announcement.imageCover) {
                 <img
@@ -103,7 +393,7 @@
                 <div
                   class="w-full h-full flex items-center justify-center text-gray-400"
                 >
-                  <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 20 20">
+                  <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
                     <path
                       fill-rule="evenodd"
                       d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z"
@@ -114,18 +404,17 @@
                 }
               </div>
 
-              <div class="flex-1">
-                <h4 class="font-semibold text-gray-900 mb-1">
+              <div class="flex-1 min-w-0">
+                <h4 class="font-semibold text-gray-900 mb-1 truncate">
                   {{ announcement.title }}
                 </h4>
                 <p class="text-sm text-gray-600 mb-2 line-clamp-2">
                   {{ announcement.description }}
                 </p>
 
-                <!-- Localisation -->
-                <div class="flex items-center text-sm text-gray-500 mb-2">
+                <div class="flex items-center text-xs text-gray-500 mb-2">
                   <svg
-                    class="w-4 h-4 mr-1"
+                    class="w-3 h-3 mr-1"
                     fill="currentColor"
                     viewBox="0 0 20 20"
                   >
@@ -135,18 +424,30 @@
                       clip-rule="evenodd"
                     ></path>
                   </svg>
-                  {{ announcement.address }}, {{ announcement.city }}
-                  {{ announcement.zipcode }}
+                  <span class="truncate">{{ announcement.city }}</span>
+                  <span class="mx-2">•</span>
+                  <span>{{ announcement.maxClient }} pers.</span>
                 </div>
 
-                <!-- Prix et capacité -->
                 <div class="flex justify-between items-center">
                   <span class="text-lg font-bold text-blue-600"
-                    >{{ announcement.dailyPrice }}€/jour</span
+                    >{{ announcement.dailyPrice }}€/j</span
                   >
-                  <span class="text-sm text-gray-500"
-                    >{{ announcement.maxClient }} clients max</span
-                  >
+                  <div class="flex gap-1">
+                    @if(announcement.services.length > 0) {
+                    <span
+                      class="px-2 py-1 bg-green-100 text-green-700 text-xs rounded"
+                    >
+                      {{ announcement.services.length }} services
+                    </span>
+                    } @if(announcement.equipments.length > 0) {
+                    <span
+                      class="px-2 py-1 bg-blue-100 text-blue-700 text-xs rounded"
+                    >
+                      {{ announcement.equipments.length }} équipements
+                    </span>
+                    }
+                  </div>
                 </div>
               </div>
             </div>
@@ -170,22 +471,31 @@
               Aucun résultat
             </h3>
             <p class="mt-1 text-sm text-gray-500">
-              Essayez de modifier vos critères de recherche.
+              Modifiez vos critères de recherche
             </p>
-          </div>
-          } }@else {
-          <div class="text-center bg-white p-10 rounded-lg shadow-md">
-            <p class="mt-1 text-2xl">Recherche des meilleures offres...</p>
-            <app-custom-loader></app-custom-loader>
           </div>
           }
         </div>
       </div>
+      } } @else {
+      <!-- Loading -->
+      <div class="h-full flex items-center justify-center bg-white">
+        <div class="text-center">
+          <app-custom-loader [size]="8"></app-custom-loader>
+          <p class="mt-4 text-gray-600">Recherche en cours...</p>
+        </div>
+      </div>
+      }
     </div>
-  </div>
 
-  <!-- Section droite: Carte (50%) -->
-  <div class="w-1/2 bg-gray-100">
-    <app-map-search [results]="results"> </app-map-search>
+    <!-- Section droite: Map (50%) -->
+    <div class="w-1/2 bg-gray-100">
+      <app-map-search
+        (selectedAnnouncement)="detailAnnouncement($event)"
+        [loading]="loadingResults"
+        [results]="results"
+      >
+      </app-map-search>
+    </div>
   </div>
 </div>

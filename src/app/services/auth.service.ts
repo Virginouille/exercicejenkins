@@ -1,7 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { UserService } from './user.service';
 import User from '../models/user.interface';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, delay } from 'rxjs';
 import { Router } from '@angular/router';
 
 @Injectable({
@@ -12,6 +12,8 @@ export class AuthService {
   private userService: UserService = inject(UserService);
   private router : Router = inject(Router); // Pour la redirection
 
+  private initializedSubject = new BehaviorSubject<boolean>(false);
+  public initialized$ = this.initializedSubject.asObservable();
   //Utilisation d'un observable pour partager la prop User aux autre composants
   private userSubject = new BehaviorSubject<User | null>(null);
   public user$ = this.userSubject.asObservable();
@@ -27,6 +29,15 @@ export class AuthService {
     this.userSubject.next(user);
   }
 
+    get initialized(): boolean {
+    return this.initializedSubject.value;
+  }
+
+  // Setter pour mettre à jour l'observable utilisateur
+  setInitialized(state: boolean): void {
+    this.initializedSubject.next(state);
+  }
+
   constructor() { 
     this.verifyAuth();
   }
@@ -37,7 +48,7 @@ export class AuthService {
     const token:string | null = localStorage.getItem("token");
     if(token){
       // Je test le token en récupérant le User associé 
-      this.userService.getCurrent(token).subscribe({
+      this.userService.getCurrent(token).pipe(delay(1000)).subscribe({
         // Un user à été récuperer
         next:(data: User)=>{
           // Je stocke mon User et renseigne l'état de l'application car User n'est plus null
@@ -55,6 +66,9 @@ export class AuthService {
           console.log(error);
           console.log("Token expiré ou invalide");
           this.logout();
+        },
+        complete:()=>{
+          this.setInitialized(true);
         }
       });
     }else{

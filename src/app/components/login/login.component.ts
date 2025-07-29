@@ -80,6 +80,7 @@ export class LoginComponent {
     // );
 
     this.formSubmitted = true;
+    this.apiError = null;
 
     if (this.loginForm.valid) {
       this.isLoading = true;
@@ -94,8 +95,8 @@ export class LoginComponent {
           console.log(data.token);
           // Stocker le token en localStorage ( meme syntaxe qu'en JS )
           localStorage.setItem("token",data.token);
-          this.apiError = null;
           this.authService.verifyAuth("profile");
+          
         },
         error: (error) => {
           console.log("Erreur",error.error.message);
@@ -104,6 +105,8 @@ export class LoginComponent {
 
         },
       });
+
+
     }
   }
 

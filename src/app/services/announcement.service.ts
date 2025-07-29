@@ -11,9 +11,9 @@ export class AnnouncementService {
   private apiUrl: string = 'https://atelier-de-toril.fr/api/announcements';
   private  httpClient: HttpClient = inject(HttpClient);
 
-  getAll(filters: string|null = null): Observable<Announcement[]> {
+  getAll(filters : {[param: string]: string} | null = null): Observable<Announcement[]> {
     return this.httpClient.get<Announcement[]>(this.apiUrl,{
-      params: {filters},
+      params: filters,
       headers: {
         "Accept":"application/json"
       }
@@ -21,6 +21,7 @@ export class AnnouncementService {
   }
 
   getById(id: number): Observable<Announcement> {
+
     return this.httpClient.get<Announcement>(this.apiUrl + "/"+ id,{
       headers: {
         "Accept":"application/json",

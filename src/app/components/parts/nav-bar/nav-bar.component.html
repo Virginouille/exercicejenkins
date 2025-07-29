@@ -1,4 +1,4 @@
-<nav class="min-h-[10vh] bg-white shadow-md sticky top-0 z-50">
+<nav class="min-h-[8vh] max-h-[10vh] bg-white shadow-md sticky top-0 z-50">
   <div class="container mx-auto px-6 py-4 flex justify-between items-center">
     <!-- Logo -->
     <a
@@ -16,6 +16,7 @@
     >
 
     <!-- Liens connexion/inscription -->
+@if(authService.initialized){
     @if(!authService.user){
     <div>
       <a
@@ -47,5 +48,8 @@
       </p>
     </div>
     }
+}@else {
+  <app-custom-loader [size]="4"></app-custom-loader>
+}
   </div>
 </nav>

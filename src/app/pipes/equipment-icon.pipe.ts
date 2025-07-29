@@ -9,7 +9,7 @@ export class EquipmentIconPipe implements PipeTransform {
   //retourne un émoji selon le title de l'équipement
   transform(title: string): string {
 
-    return this.equipmentMap[title] || 'circle-help'; // fallback si non trouvé
+    return this.equipmentMap[title] || '✅'; // fallback si non trouvé
   }
 
  equipmentMap: { [title: string]: string } = {
@@ -42,7 +42,8 @@ export class EquipmentIconPipe implements PipeTransform {
   'Vélos': '🚴',
   'Kayaks': '🛶',
   'Barbecue': '🍖',
-  'Lit bébé': '👶'
+  'Lit bébé': '👶',
+  
 };
 
 

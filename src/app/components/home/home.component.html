@@ -104,7 +104,7 @@
         </div>
       </header>
       @if(loadingAnnouncement){
-        <app-custom-loader></app-custom-loader>
+        <app-custom-loader [size]="8"></app-custom-loader>
       }@else {
       <div class="grid md:grid-cols-3 lg:grid-cols-4 gap-7">
         @for(announcement of announcements; track announcement.id){

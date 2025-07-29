@@ -5,14 +5,18 @@ import { AnnouncementService } from '../../services/announcement.service';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { delay } from 'rxjs';
 import { CustomLoaderComponent } from "../parts/custom-loader/custom-loader.component";
+import { CommonModule } from '@angular/common';
+import { ServiceIconPipe } from '../../pipes/service-icon.pipe';
+import { EquipmentIconPipe } from '../../pipes/equipment-icon.pipe';
 
 @Component({
   selector: 'app-announcement-search',
   standalone: true,
-  imports: [MapSearchComponent, ReactiveFormsModule, CustomLoaderComponent],
+  imports: [MapSearchComponent, ReactiveFormsModule, CustomLoaderComponent, CommonModule, ServiceIconPipe,EquipmentIconPipe],
   templateUrl: './announcement-search.component.html',
   styleUrl: './announcement-search.component.css',
 })
+
 export class AnnouncementSearchComponent implements OnInit {
   private announcementService: AnnouncementService =
     inject(AnnouncementService);
@@ -20,7 +24,9 @@ export class AnnouncementSearchComponent implements OnInit {
 
   searchForm: FormGroup;
   loadingResults: boolean = true;
+  results: Announcement[] = [];
 
+  selectedAnnouncement: Announcement| null = null;
   constructor() {
     this.searchForm = this.formBuilder.group({
       city: ['', []],
@@ -29,10 +35,18 @@ export class AnnouncementSearchComponent implements OnInit {
     });
   }
 
-  results: Announcement[] = [];
+
 
   ngOnInit(): void {
     this.search();
+  }
+
+  detailAnnouncement(announcement:any) {
+    this.selectedAnnouncement = announcement;
+  }
+
+  returnToSearch() {
+    this.selectedAnnouncement = null;
   }
 
   submitSearch() {
@@ -40,20 +54,16 @@ export class AnnouncementSearchComponent implements OnInit {
     this.loadingResults = true;
 
     if (this.searchForm.valid) {
-      
-      const query = new URLSearchParams({
-        ...this.searchForm.value,
-      }).toString();
-      //Permet de créer un chaine sous forme de Parametre d'url pour la requete GET avec les data du Form
-      //  par exemple  city=test&maxClient=10&dailyPrice=3
-      console.log(query);
       //Lancer la recherche avec les filtres
-      this.search(query);
+      this.search(this.searchForm.value);
     }
   }
 
-  search(filters: string | null = null) {
-    this.announcementService.getAll(filters).pipe(delay(2000)).subscribe({
+  search(filters: {[param: string]: string} | null = null) {
+    //Rest l'affichage du détail de l'annonce selectionnée
+    this.returnToSearch();
+    
+    this.announcementService.getAll(filters).subscribe({
       next: (data: Announcement[]) => {
         this.results = data;
       },
@@ -67,6 +77,7 @@ export class AnnouncementSearchComponent implements OnInit {
   }
 
   resetForm() {
+    this.returnToSearch();
     // Reset les values du formGroup en précisant '' au lieu de null par défaut
     // pour éviter les erreurs lors de la création des filtres pour la requete
     this.searchForm.reset({
@@ -74,5 +85,7 @@ export class AnnouncementSearchComponent implements OnInit {
       'maxClient[lte]': '',
       'dailyPrice[lte]': '',
     });
+
+
   }
 }

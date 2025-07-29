@@ -8,7 +8,7 @@ export class ServiceIconPipe implements PipeTransform {
 
     //retourne un émoji selon le title de l'équipement
   transform(title: string): string {
-    return this.emojiMap[title] || 'circle-help'; // fallback si non trouvé
+    return this.emojiMap[title] || '✅'; // fallback si non trouvé
   }
 
 emojiMap: { [title: string]: string } = {

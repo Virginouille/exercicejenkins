@@ -1,15 +1,45 @@
-<mgl-map class="map"
-      [style]="'styles.json'"
-      [zoom]="[9]" 
-      [minZoom]="4" 
-      [maxZoom]="20" 
-      [maxPitch]="70" 
-      [maxBounds]="[[-5.5, 41.0], [9.5, 51.5] ]"
-      [canvasContextAttributes]="{preserveDrawingBuffer: true}"
-      (mapLoad)="onMapLoad($event)"
->
+<div class="flex h-screen">
+  <!-- Section droite: Map (50%) -->
+  <div class="w-full relative">
+        <mgl-map class="map"
+            [style]="'styles.json'"
+            [zoom]="[9]" 
+            [minZoom]="4" 
+            [maxZoom]="20" 
+            [maxPitch]="70" 
+            [maxBounds]="[[-5.5, 41.0], [9.5, 51.5] ]"
+            [canvasContextAttributes]="{preserveDrawingBuffer: true}"
+            (mapLoad)="onMapLoad($event)"
+        >
+        <mgl-control
+        mglGeolocate
+        mglNavigation
+        [positionOptions]="{
+          enableHighAccuracy: true
+        }"
+        [trackUserLocation]="true"
+      ></mgl-control>
+@if(!loading){
     @for(announcement of results;track announcement.id){
         <!-- + permet de convertir un string en number -->
-        <mgl-marker [lngLat]="[+announcement.longitude,+announcement.lattitude]"></mgl-marker>
+        <mgl-marker                 
+            [lngLat]="[+announcement.longitude,+announcement.lattitude]"
+        >
+        <div (click)="selectAnnouncement(announcement)" class="cursor-pointer">
+            <p class="text-green-800 font-bold text-">{{announcement.dailyPrice}} €</p>
+            <img src="images/charging.png" class="h-10 w-10" >
+        </div>
+        </mgl-marker>
+        
     }
+}
 </mgl-map>
+    
+    <!-- Loader overlay UNIQUEMENT sur la map -->
+    @if(loading) {
+      <div class="absolute inset-0 bg-blue-600/25 flex items-center justify-center z-10">
+        <app-custom-loader [size]="8"></app-custom-loader>
+      </div>
+    }
+  </div>
+</div>
