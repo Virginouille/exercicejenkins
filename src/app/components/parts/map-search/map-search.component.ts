@@ -8,7 +8,7 @@ import { CustomLoaderComponent } from "../custom-loader/custom-loader.component"
 @Component({
   selector: 'app-map-search',
   standalone: true,
-  imports: [MapComponent,PopupComponent, MarkerComponent, GeolocateControlDirective, ControlComponent, CommonModule, CustomLoaderComponent],
+  imports: [MapComponent, MarkerComponent, GeolocateControlDirective, ControlComponent, CommonModule, CustomLoaderComponent],
   templateUrl: './map-search.component.html',
   styleUrl: './map-search.component.css'
 })

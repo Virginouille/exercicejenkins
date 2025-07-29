@@ -12,7 +12,6 @@
       </label>
       <app-form-control-error
         [field]="loginForm.get('email')"
-        [formSubmitted]="formSubmitted"
       ></app-form-control-error>
       <input
         type="email"
@@ -28,7 +27,6 @@
 
       <app-form-control-error
         [field]="loginForm.get('password')"
-        [formSubmitted]="formSubmitted"
       ></app-form-control-error>
 
       <div class="flex gap-3">
@@ -44,7 +42,8 @@
         </p>
       </div>
       @if (isLoading) {
-      <app-custom-loader></app-custom-loader> }@else {
+      <app-custom-loader [size]="4"></app-custom-loader>
+    }@else {
       <button
         type="submit"
         class="w-full bg-blue-600 text-white py-3 rounded-lg font-bold hover:bg-blue-700 transition"

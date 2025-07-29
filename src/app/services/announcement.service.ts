@@ -29,4 +29,13 @@ export class AnnouncementService {
     });
   }
 
+    post(announcement: Partial<Announcement>): Observable<Announcement> {
+
+    return this.httpClient.post<Announcement>(this.apiUrl,announcement,{
+      headers: {
+        "Accept":"application/json",
+      }
+    });
+  }
+
 }

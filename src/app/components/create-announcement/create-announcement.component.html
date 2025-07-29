@@ -1,0 +1,350 @@
+<div class="min-h-screen bg-gray-50 py-8">
+  <div class="max-w-4xl mx-auto px-4">
+    <!-- Header -->
+    <div class="mb-8">
+      <button
+        (click)="goBack()"
+        class="flex items-center text-blue-600 hover:text-blue-800 font-medium mb-4 transition-colors"
+      >
+        <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
+          <path
+            fill-rule="evenodd"
+            d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L4.414 9H17a1 1 0 110 2H4.414l5.293 5.293a1 1 0 010 1.414z"
+            clip-rule="evenodd"
+          />
+        </svg>
+        Retour au profil
+      </button>
+      <h1 class="text-3xl font-bold text-gray-900">
+        Créer une nouvelle annonce
+      </h1>
+      <p class="text-gray-600 mt-2">
+        Remplissez les informations de votre colocation
+      </p>
+    </div>
+
+    <!-- Formulaire -->
+    <form
+      [formGroup]="announcementForm"
+      (ngSubmit)="onSubmit()"
+      class="space-y-8"
+    >
+      <!-- Informations générales -->
+      <div class="bg-white rounded-2xl shadow-md p-8">
+        <h2 class="text-xl font-semibold text-gray-800 mb-6 flex items-center">
+          <svg
+            class="w-6 h-6 mr-3 text-blue-600"
+            fill="currentColor"
+            viewBox="0 0 20 20"
+          >
+            <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+          Informations générales
+        </h2>
+
+        <div class="grid md:grid-cols-2 gap-6">
+          <!-- Titre -->
+          <div class="md:col-span-2">
+            <label
+              for="title"
+              class="block text-sm font-medium text-gray-700 mb-2"
+            >
+              Titre de l'annonce *
+            </label>
+            <input
+              type="text"
+              id="title"
+              formControlName="title"
+              class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
+              placeholder="Ex: Chambre dans colocation sympa au centre-ville"
+            />
+                 <app-form-control-error
+              [field]="announcementForm.get('title')"
+            ></app-form-control-error>
+          </div>
+
+          <!-- Description -->
+          <div class="md:col-span-2">
+            <label
+              for="description"
+              class="block text-sm font-medium text-gray-700 mb-2"
+            >
+              Description *
+            </label>
+            <textarea
+              id="description"
+              formControlName="description"
+              rows="4"
+              class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors resize-none"
+              placeholder="Décrivez votre logement, l'ambiance, les règles de vie..."
+            ></textarea>
+            <app-form-control-error
+              [field]="announcementForm.get('description')"
+            ></app-form-control-error>
+          </div>
+
+          <!-- Capacité maximale -->
+          <div>
+            <label
+              for="maxClient"
+              class="block text-sm font-medium text-gray-700 mb-2"
+            >
+              Nombre maximum de colocataires *
+            </label>
+            <input
+              type="number"
+              id="maxClient"
+              formControlName="maxClient"
+              min="1"
+              max="20"
+              class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
+              placeholder="2"
+            />
+            <app-form-control-error
+              [field]="announcementForm.get('maxClients')"
+            ></app-form-control-error>
+          </div>
+
+          <!-- Prix journalier -->
+          <div>
+            <label
+              for="dailyPrice"
+              class="block text-sm font-medium text-gray-700 mb-2"
+            >
+              Prix par nuit (€) *
+            </label>
+            <input
+              type="number"
+              id="dailyPrice"
+              formControlName="dailyPrice"
+              min="1"
+              step="0.01"
+              class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
+              placeholder="50.00"
+            />
+            <app-form-control-error
+              [field]="announcementForm.get('dailyPrice')"
+            ></app-form-control-error>
+          </div>
+        </div>
+      </div>
+
+      <!-- Localisation -->
+      <div class="bg-white rounded-2xl shadow-md p-8">
+        <h2 class="text-xl font-semibold text-gray-800 mb-6 flex items-center">
+          <svg
+            class="w-6 h-6 mr-3 text-green-600"
+            fill="currentColor"
+            viewBox="0 0 20 20"
+          >
+            <path
+              fill-rule="evenodd"
+              d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z"
+              clip-rule="evenodd"
+            />
+          </svg>
+          Localisation
+        </h2>
+
+        <div class="grid md:grid-cols-2 gap-6">
+          <!-- Adresse complète -->
+          <div class="md:col-span-2">
+            <label
+              for="address"
+              class="block text-sm font-medium text-gray-700 mb-2"
+            >
+              Adresse complète *
+            </label>
+            <input
+              type="text"
+              id="address"
+              formControlName="address"
+              class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
+              placeholder="123 rue de la République"
+            />
+                 <app-form-control-error
+              [field]="announcementForm.get('address')"
+            ></app-form-control-error>
+          </div>
+
+          <!-- Ville -->
+          <div>
+            <label
+              for="city"
+              class="block text-sm font-medium text-gray-700 mb-2"
+            >
+              Ville *
+            </label>
+            <input
+              type="text"
+              id="city"
+              formControlName="city"
+              class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
+              placeholder="Paris"
+            />
+                 <app-form-control-error
+              [field]="announcementForm.get('city')"
+            ></app-form-control-error>
+          </div>
+
+          <!-- Code postal -->
+          <div>
+            <label
+              for="zipcode"
+              class="block text-sm font-medium text-gray-700 mb-2"
+            >
+              Code postal *
+            </label>
+            <input
+              type="text"
+              id="zipcode"
+              formControlName="zipcode"
+              class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
+              placeholder="75001"
+            />
+                  <app-form-control-error
+              [field]="announcementForm.get('zipcode')"
+            ></app-form-control-error>
+          </div>
+
+          <!-- Coordonnées GPS -->
+          <div>
+            <label
+              for="lattitude"
+              class="block text-sm font-medium text-gray-700 mb-2"
+            >
+              Latitude *
+            </label>
+            <input
+              type="number"
+              id="lattitude"
+              formControlName="lattitude"
+              step="0.000001"
+              class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
+              placeholder="48.856614"
+            />
+                  <app-form-control-error
+              [field]="announcementForm.get('lattitude')"
+            ></app-form-control-error>
+          </div>
+
+          <div>
+            <label
+              for="longitude"
+              class="block text-sm font-medium text-gray-700 mb-2"
+            >
+              Longitude *
+            </label>
+            <input
+              type="number"
+              id="longitude"
+              formControlName="longitude"
+              step="0.000001"
+              class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
+              placeholder="2.352222"
+            />
+                  <app-form-control-error
+              [field]="announcementForm.get('longitude')"
+            ></app-form-control-error>
+          </div>
+        </div>
+
+        <!-- Bouton de géolocalisation -->
+        <div class="mt-4">
+          <button
+            type="button"
+            (click)="getCurrentLocation()"
+            class="inline-flex items-center px-4 py-2 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors"
+          >
+            <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
+              <path
+                fill-rule="evenodd"
+                d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z"
+                clip-rule="evenodd"
+              />
+            </svg>
+            Utiliser ma position actuelle
+          </button>
+        </div>
+      </div>
+
+      <!-- Image de couverture -->
+      <div class="bg-white rounded-2xl shadow-md p-8">
+        <h2 class="text-xl font-semibold text-gray-800 mb-6 flex items-center">
+          <svg
+            class="w-6 h-6 mr-3 text-purple-600"
+            fill="currentColor"
+            viewBox="0 0 20 20"
+          >
+            <path
+              fill-rule="evenodd"
+              d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z"
+              clip-rule="evenodd"
+            />
+          </svg>
+          Image de couverture
+        </h2>
+
+        <div>
+          <label
+            for="imageCover"
+            class="block text-sm font-medium text-gray-700 mb-2"
+          >
+            URL de l'image de couverture *
+          </label>
+          <input
+            type="url"
+            id="imageCover"
+            formControlName="imageCover"
+            class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
+            placeholder="https://exemple.com/image.jpg"
+          />
+                <app-form-control-error
+              [field]="announcementForm.get('imageCover')"
+            ></app-form-control-error>
+          <p class="mt-2 text-sm text-gray-500">
+            Ajoutez l'URL d'une image qui représente bien votre logement
+          </p>
+        </div>
+      </div>
+
+      <!-- Boutons d'action -->
+      <div class="flex flex-col sm:flex-row gap-4 justify-end">
+        <button
+          type="button"
+          (click)="goBack()"
+          class="px-8 py-3 border border-gray-300 rounded-xl font-medium text-gray-700 hover:bg-gray-50 transition-colors"
+        >
+          Annuler
+        </button>
+        <button
+          type="submit"
+          [disabled]="announcementForm.invalid || isSubmitting"
+          class="px-8 py-3 bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed text-white font-medium rounded-xl transition-colors flex items-center"
+        >
+          <svg
+            *ngIf="isSubmitting"
+            class="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
+            fill="none"
+            viewBox="0 0 24 24"
+          >
+            <circle
+              class="opacity-25"
+              cx="12"
+              cy="12"
+              r="10"
+              stroke="currentColor"
+              stroke-width="4"
+            ></circle>
+            <path
+              class="opacity-75"
+              fill="currentColor"
+              d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+            ></path>
+          </svg>
+          {{ isSubmitting ? "Création en cours..." : "Créer l'annonce" }}
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

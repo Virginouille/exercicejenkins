@@ -239,11 +239,11 @@
             <h2 class="text-2xl font-bold text-gray-800">
               Mes Annonces ({{ user.announcements.length }})
             </h2>
-            <button
-              class="bg-blue-600 hover:bg-blue-700 text-white font-medium px-6 py-3 rounded-xl transition"
+            <a routerLink='/announcement-create'
+              class="bg-blue-600 hover:bg-blue-700 text-white font-medium cursor-pointer px-6 py-3 rounded-xl transition"
             >
               + Nouvelle annonce
-            </button>
+            </a>
           </div>
         </div>
 
@@ -306,27 +306,6 @@
             </div>
             }
           </div>
-        </div>
-        } @else {
-        <div class="p-12 text-center">
-          <svg
-            class="w-16 h-16 mx-auto text-gray-300 mb-4"
-            fill="currentColor"
-            viewBox="0 0 20 20"
-          >
-            <path
-              d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"
-            />
-          </svg>
-          <h3 class="text-xl font-medium text-gray-800 mb-2">Aucune annonce</h3>
-          <p class="text-gray-500 mb-6">
-            Commencez par créer votre première annonce de colocation
-          </p>
-          <button
-            class="bg-blue-600 hover:bg-blue-700 text-white font-medium px-8 py-3 rounded-xl transition"
-          >
-            Créer une annonce
-          </button>
         </div>
         }
       </div>
@@ -507,7 +486,9 @@
     </div>
   </div>
   }@else {
-<app-custom-loader [size]="8"></app-custom-loader>
+<div class="relative h-64 flex items-center justify-center">
+  <app-custom-loader [size]="8"></app-custom-loader>
+</div>
 }
 </main>
 

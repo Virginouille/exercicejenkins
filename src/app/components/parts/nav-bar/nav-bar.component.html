@@ -16,8 +16,8 @@
     >
 
     <!-- Liens connexion/inscription -->
-@if(authService.initialized){
-    @if(!authService.user){
+@if(authInitialized){
+    @if(!user){
     <div>
       <a
         [routerLink]="['/login']"
@@ -38,7 +38,7 @@
         [routerLink]="['/profile']"
         routerLinkActive="activeLink"
         class="text-gray-700 font-semibold hover:text-blue-600 transition mx-2"
-        >Profile {{ authService.user.email }}
+        >Profile {{ user.email }}
       </a>
       <p
         (click)="authService.logout()"

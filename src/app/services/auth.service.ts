@@ -18,7 +18,7 @@ export class AuthService {
   private userSubject = new BehaviorSubject<User | null>(null);
   public user$ = this.userSubject.asObservable();
   //Le $ en fin de variable est une convention pour identifier les data observable
-  
+
   //Getter pour la simplicité d'utilisation
   get user(): User | null {
     return this.userSubject.value;
@@ -38,7 +38,7 @@ export class AuthService {
     this.initializedSubject.next(state);
   }
 
-  constructor() { 
+  constructor() {
     this.verifyAuth();
   }
 
@@ -47,16 +47,16 @@ export class AuthService {
     //Vérifier si un token est présent dans le storage
     const token:string | null = localStorage.getItem("token");
     if(token){
-      // Je test le token en récupérant le User associé 
+      // Je test le token en récupérant le User associé
       this.userService.getCurrent(token).pipe(delay(1000)).subscribe({
         // Un user à été récuperer
         next:(data: User)=>{
           // Je stocke mon User et renseigne l'état de l'application car User n'est plus null
           const user: User = data;
           console.log(user);
-          //Initialisation du User 
+          //Initialisation du User
           this.setUser(user);
-
+          this.setInitialized(true);
           if(redirectRoute){
           //Redirection Home / profile
           this.router.navigate([redirectRoute]);
@@ -65,13 +65,13 @@ export class AuthService {
         error:(error)=>{
           console.log(error);
           console.log("Token expiré ou invalide");
+          this.setInitialized(true);
           this.logout();
         },
-        complete:()=>{
-          this.setInitialized(true);
-        }
+
       });
     }else{
+      this.setInitialized(true);
       this.setUser(null);
     }
   }

@@ -10,13 +10,12 @@ import { AbstractControl, FormControl } from '@angular/forms';
 })
 export class FormControlErrorComponent {
   @Input() field: AbstractControl | null = null;
-  @Input() formSubmitted: boolean = false;
 
   isFieldInvalid(): boolean {
     // Retourne true si TOUTES ces conditions sont vraies :
     //    champ existe ET champ invalide ET (champ dirty OU touched OU formulaire est soumis)
     return Boolean(
-      this.field && this.field.invalid && this.field.touched && this.formSubmitted
+      this.field && this.field.invalid && this.field.touched
     );
     // Boolean() créer un booléen d'après une donnée falsy ou truthy
   }

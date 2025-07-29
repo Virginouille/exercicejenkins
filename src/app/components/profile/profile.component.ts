@@ -12,31 +12,30 @@ import { CustomLoaderComponent } from "../parts/custom-loader/custom-loader.comp
   templateUrl: './profile.component.html',
   styleUrl: './profile.component.css'
 })
-export class ProfileComponent implements OnInit{
+export class ProfileComponent implements OnInit {
 
   private authService: AuthService = inject(AuthService);
-  private router : Router = inject(Router); // Pour la redirection
+  private router: Router = inject(Router); // Pour la redirection
 
   activeTab: string = 'info';
-  user:User|null = null;
+  user: User | null = null;
 
   authInitialized: boolean = false;
 
-    ngOnInit(): void {
+  ngOnInit(): void {
 
-      this.authService.initialized$.subscribe(initialized => {
-          this.authInitialized = initialized;
-          if(initialized){
-            console.log('Auth init:', this.authInitialized);
-            //Chargement du user une fois l'auth initialisé 
-            this.loadUser();
-          }
-          
-        });
-    }
+    this.authService.initialized$.subscribe(initialized => {
+      this.authInitialized = initialized;
+      if (initialized) {
+        console.log('Auth init:', this.authInitialized);
+        //Chargement du user une fois l'auth initialisé
+        this.loadUser();
+      }
+    });
+  }
 
-    //méthode pour charger le User
-    private loadUser(): void {
+  //méthode pour charger le User
+  private loadUser(): void {
 
     this.authService.user$.subscribe(user => {
       if (user) {
