@@ -1,0 +1,187 @@
+<div class="flex h-screen">
+  <!-- Section gauche: Formulaire + Résultats (50%) -->
+  <div class="w-1/2 flex flex-col">
+    <!-- Formulaire de recherche -->
+    <div class="bg-white shadow-sm border-b border-gray-200 p-6">
+      <h2 class="text-xl font-semibold mb-4 text-gray-800">
+        Rechercher une annonce
+      </h2>
+
+      <form
+        [formGroup]="searchForm"
+        (ngSubmit)="submitSearch()"
+        class="space-y-4"
+      >
+        <!-- Ville -->
+        <div>
+          <label for="city" class="block text-sm font-medium text-gray-700 mb-1"
+            >Ville</label
+          >
+          <input
+            id="city"
+            type="text"
+            formControlName="city"
+            placeholder="Rechercher par ville..."
+            class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+          />
+        </div>
+
+        <!-- Prix maximum -->
+        <div>
+          <label
+            for="maxPrice"
+            class="block text-sm font-medium text-gray-700 mb-1"
+            >Prix maximum (€/jour)</label
+          >
+          <input
+            id="maxPrice"
+            type="number"
+            placeholder="Prix maximum..."
+            formControlName="dailyPrice[lte]"
+            min="0"
+            class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+          />
+        </div>
+
+        <!-- Nombre de clients -->
+        <div>
+          <label
+            for="maxClient"
+            class="block text-sm font-medium text-gray-700 mb-1"
+            >Nombre maximum de locataires</label
+          >
+          <input
+            id="maxClient"
+            type="number"
+            min="1"
+            formControlName="maxClient[lte]"
+            class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+          />
+        </div>
+
+        <!-- Boutons -->
+        <div class="flex gap-3">
+          <button
+            type="submit"
+            class="flex-1 bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors duration-200"
+          >
+            Rechercher
+          </button>
+          <button
+            (click)="resetForm()"
+            class="flex-1 bg-red-600 text-white py-2 px-4 rounded-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 transition-colors duration-200"
+          >
+            Réinitialiser
+          </button>
+        </div>
+      </form>
+    </div>
+
+    <!-- Liste des résultats -->
+    <div class="flex-1 overflow-y-auto bg-gray-50">
+      <div class="p-4">
+        <h3 class="text-lg font-semibold mb-4 text-gray-800">
+          Résultats ({{ results.length }})
+        </h3>
+
+        <div class="space-y-4">
+          @for(announcement of results; track announcement.id) {
+          <div
+            class="bg-white rounded-lg shadow-sm border border-gray-200 p-4 hover:shadow-md transition-shadow duration-200 cursor-pointer"
+          >
+            <!-- Image et infos principales -->
+            <div class="flex gap-4">
+              <div
+                class="w-24 h-24 bg-gray-200 rounded-lg overflow-hidden flex-shrink-0"
+              >
+                @if(announcement.imageCover) {
+                <img
+                  [src]="announcement.imageCover"
+                  [alt]="announcement.title"
+                  class="w-full h-full object-cover"
+                />
+                } @else {
+                <div
+                  class="w-full h-full flex items-center justify-center text-gray-400"
+                >
+                  <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 20 20">
+                    <path
+                      fill-rule="evenodd"
+                      d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z"
+                      clip-rule="evenodd"
+                    ></path>
+                  </svg>
+                </div>
+                }
+              </div>
+
+              <div class="flex-1">
+                <h4 class="font-semibold text-gray-900 mb-1">
+                  {{ announcement.title }}
+                </h4>
+                <p class="text-sm text-gray-600 mb-2 line-clamp-2">
+                  {{ announcement.description }}
+                </p>
+
+                <!-- Localisation -->
+                <div class="flex items-center text-sm text-gray-500 mb-2">
+                  <svg
+                    class="w-4 h-4 mr-1"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                  >
+                    <path
+                      fill-rule="evenodd"
+                      d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z"
+                      clip-rule="evenodd"
+                    ></path>
+                  </svg>
+                  {{ announcement.address }}, {{ announcement.city }}
+                  {{ announcement.zipcode }}
+                </div>
+
+                <!-- Prix et capacité -->
+                <div class="flex justify-between items-center">
+                  <span class="text-lg font-bold text-blue-600"
+                    >{{ announcement.dailyPrice }}€/jour</span
+                  >
+                  <span class="text-sm text-gray-500"
+                    >{{ announcement.maxClient }} clients max</span
+                  >
+                </div>
+              </div>
+            </div>
+          </div>
+          } @empty {
+          <div class="text-center py-12">
+            <svg
+              class="mx-auto h-12 w-12 text-gray-400"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"
+              />
+            </svg>
+            <h3 class="mt-2 text-sm font-medium text-gray-900">
+              Aucun résultat
+            </h3>
+            <p class="mt-1 text-sm text-gray-500">
+              Essayez de modifier vos critères de recherche.
+            </p>
+          </div>
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Section droite: Carte (50%) -->
+  <div class="w-1/2 bg-gray-100">
+    <app-map-search [results]="results"> </app-map-search>
+  </div>
+</div>

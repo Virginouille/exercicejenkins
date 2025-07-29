@@ -1,0 +1,15 @@
+<mgl-map class="map"
+      [style]="'styles.json'"
+      [zoom]="[9]" 
+      [minZoom]="4" 
+      [maxZoom]="20" 
+      [maxPitch]="70" 
+      [maxBounds]="[[-5.5, 41.0], [9.5, 51.5] ]"
+      [canvasContextAttributes]="{preserveDrawingBuffer: true}"
+      (mapLoad)="onMapLoad($event)"
+>
+    @for(announcement of results;track announcement.id){
+        <!-- + permet de convertir un string en number -->
+        <mgl-marker [lngLat]="[+announcement.longitude,+announcement.lattitude]"></mgl-marker>
+    }
+</mgl-map>
