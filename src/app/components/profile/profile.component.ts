@@ -18,7 +18,7 @@ export class ProfileComponent implements OnInit {
   private router: Router = inject(Router); // Pour la redirection
 
   activeTab: string = 'info';
-  user: User | null = null;
+  user!: User | null;
 
   authInitialized: boolean = false;
 

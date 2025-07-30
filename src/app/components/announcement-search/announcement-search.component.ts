@@ -35,13 +35,11 @@ export class AnnouncementSearchComponent implements OnInit {
     });
   }
 
-
-
   ngOnInit(): void {
     this.search();
   }
 
-  detailAnnouncement(announcement:any) {
+  detailAnnouncement(announcement: Announcement) {
     this.selectedAnnouncement = announcement;
   }
 
@@ -62,7 +60,7 @@ export class AnnouncementSearchComponent implements OnInit {
   search(filters: {[param: string]: string} | null = null) {
     //Rest l'affichage du détail de l'annonce selectionnée
     this.returnToSearch();
-    
+
     this.announcementService.getAll(filters).subscribe({
       next: (data: Announcement[]) => {
         this.results = data;
@@ -72,6 +70,7 @@ export class AnnouncementSearchComponent implements OnInit {
       },
       complete: ()=>{
         this.loadingResults = false;
+
       }
     });
   }

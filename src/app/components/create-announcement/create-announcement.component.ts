@@ -14,12 +14,13 @@ import { FormControlErrorComponent } from "../parts/form-control-error/form-cont
   styleUrl: './create-announcement.component.css'
 })
 export class CreateAnnouncementComponent {
- private fb = inject(FormBuilder);
+  private fb = inject(FormBuilder);
   private router = inject(Router);
   private announcementService = inject(AnnouncementService);
 
   announcementForm: FormGroup;
-  isSubmitting = false;
+  isSubmitting:boolean = false;
+  apiError:string|null = null;
 
   ngOnInit(): void {
     this.initForm();
@@ -27,16 +28,16 @@ export class CreateAnnouncementComponent {
 
   private initForm(): void {
     this.announcementForm = this.fb.group({
-      title: ['', [Validators.required, Validators.maxLength(100)]],
-      description: ['', [Validators.required, Validators.maxLength(500)]],
-      address: ['', [Validators.required, Validators.maxLength(150)]],
-      city: ['', [Validators.required, Validators.maxLength(150)]],
-      zipcode: ['', [Validators.required, Validators.pattern(/^\d{5}$/)]],
-      lattitude: ['', [Validators.required, Validators.min(-90), Validators.max(90)]],
-      longitude: ['', [Validators.required, Validators.min(-180), Validators.max(180)]],
-      maxClient: ['', [Validators.required, Validators.min(1), Validators.max(20)]],
-      dailyPrice: ['', [Validators.required, Validators.min(0.01)]],
-      imageCover: ['', [Validators.required, Validators.maxLength(500), Validators.pattern(/^https?:\/\/.+\.(jpg|jpeg|png|gif|webp)$/i)]]
+      title: ['test', [Validators.required, Validators.maxLength(100)]],
+      description: ['test', [Validators.required, Validators.maxLength(500)]],
+      address: ['2 rue du test', [Validators.required, Validators.maxLength(150)]],
+      city: ['test', [Validators.required, Validators.maxLength(150)]],
+      zipcode: ['55555', [Validators.required, Validators.pattern(/^\d{5}$/)]],
+      lattitude: ['4.2', [Validators.required, Validators.min(-90), Validators.max(90)]],
+      longitude: ['4.1', [Validators.required, Validators.min(-180), Validators.max(180)]],
+      maxClient: ['2', [Validators.required, Validators.min(1), Validators.max(20)]],
+      dailyPrice: ['25.00', [Validators.required, Validators.min(0.01)]],
+      imageCover: ['https://test.png', [Validators.required, Validators.maxLength(500), Validators.pattern(/^https?:\/\/.+\.(jpg|jpeg|png|gif|webp)$/i)]]
     });
   }
 
@@ -44,6 +45,7 @@ export class CreateAnnouncementComponent {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
+          //Mettre a jour les données du formGroup
           this.announcementForm.patchValue({
             lattitude: position.coords.latitude,
             longitude: position.coords.longitude
@@ -78,15 +80,17 @@ export class CreateAnnouncementComponent {
 
       this.announcementService.post(announcementData).subscribe({
         next: (data: any) => {
+          this.apiError = null;
           console.log('Annonce créée avec succès:', data);
+          //Redirection avec params permettant d'ariver sur un onglet et d'afficher un message
           this.router.navigate(['/profile'], {
             queryParams: { tab: 'announcements', success: 'Annonce créée avec succès!' }
           });
         },
         error: (error) => {
           console.error('Erreur lors de la création:', error);
-          alert('Une erreur est survenue lors de la création de l\'annonce. Veuillez réessayer.');
           this.isSubmitting = false;
+          this.apiError = error.error.message;
         }
       });
     } else {

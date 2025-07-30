@@ -1,33 +1,23 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpContext } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import User from '../models/user.interface';
+import { enableAuthContext, IS_TOKEN_REQUIRED } from '../interceptors/auth.interceptor';
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'root'
 })
-export class UserService {
-  
+export class UserService  {
+
   private httpClient: HttpClient = inject(HttpClient);
 
   login(user: Partial<User>) {
-    return this.httpClient.post('https://atelier-de-toril.fr/' + 'auth', user, {
-      headers: {
-        accept: 'application/json'
-      }
-    });
+    return this.httpClient.post('https://atelier-de-toril.fr/' + 'auth', user);
   }
 
-  getCurrent(token: string) {
+  getCurrent() {
     return this.httpClient.get<User>('https://atelier-de-toril.fr/' + 'api/me', {
-      headers: {
-        accept: 'application/json',
-        'Authorization': `Bearer ${token}`
-      },
-      withCredentials: true
+      context: enableAuthContext(),
     });
   }
 
-  create(user: Partial<User>){
-
-  }
 }

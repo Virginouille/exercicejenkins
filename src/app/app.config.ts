@@ -6,13 +6,19 @@ import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { registerLocaleData } from '@angular/common';
 
 import localeFr from '@angular/common/locales/fr';
+import { authInterceptor } from './interceptors/auth.interceptor';
+import { contentInterceptor } from './interceptors/content.interceptor';
 
 registerLocaleData(localeFr);
 
 export const appConfig: ApplicationConfig = {
   providers: [
-    provideHttpClient(),
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes),
+    provideHttpClient(
+      withInterceptors(
+        [authInterceptor, contentInterceptor]
+      )
+    )
   ]
 };

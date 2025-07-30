@@ -10,13 +10,12 @@ import { CreateAnnouncementComponent } from './components/create-announcement/cr
 export const routes: Routes = [
 
   { path: '', component: HomeComponent },
-   { path: 'search', component: AnnouncementSearchComponent },
+  { path: 'search', component: AnnouncementSearchComponent },
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
   { path: 'announcement/:id', component: AnnouncementDetailComponent },
   { path: 'profile', component: ProfileComponent },
   { path: 'announcement-create', component: CreateAnnouncementComponent },
-
   { path: '**', redirectTo: '' },
 
 ];

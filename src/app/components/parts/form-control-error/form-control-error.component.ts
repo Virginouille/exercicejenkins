@@ -34,7 +34,23 @@ export class FormControlErrorComponent {
       }
       if (this.field.errors['minlength']) {
         // L'erreur minlength contient des infos détaillées
-        return `Minimum ${this.field.errors['minlength'].requiredLength} caractères`;
+        return `Minimum de ${this.field.errors['minlength'].requiredLength} caractères`;
+      }
+            if (this.field.errors['min']) {
+        // L'erreur minlength contient des infos détaillées
+        return `Valeur minimale  ${this.field.errors['min'].required}`;
+      }
+             if (this.field.errors['max']) {
+        // L'erreur minlength contient des infos détaillées
+        return `Valeur maximale ${this.field.errors['max'].required}`;
+      }
+            if (this.field.errors['maxlength']) {
+        // L'erreur minlength contient des infos détaillées
+        return `Maximum de ${this.field.errors['minlength'].requiredLength} caractères`;
+      }
+            if (this.field.errors['pattern']) {
+        // L'erreur minlength contient des infos détaillées
+        return `Format de données invalide`;
       }
     }
     return '';

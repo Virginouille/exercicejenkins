@@ -87,7 +87,7 @@ export class LoginComponent {
       console.log(
         "Form valide je peux envoyer la requete de login a l'api /auth"
       );
-      
+
       // Appel de la méthode du service
       this.userService.login(this.loginForm.value).subscribe({
         next: (data: any) => {
@@ -96,13 +96,12 @@ export class LoginComponent {
           // Stocker le token en localStorage ( meme syntaxe qu'en JS )
           localStorage.setItem("token",data.token);
           this.authService.verifyAuth("profile");
-          
+
         },
         error: (error) => {
           console.log("Erreur",error.error.message);
           this.isLoading = false;
           this.apiError = error.error.message;
-
         },
       });
 

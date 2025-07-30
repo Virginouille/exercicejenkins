@@ -48,18 +48,17 @@ export class AuthService {
     const token:string | null = localStorage.getItem("token");
     if(token){
       // Je test le token en récupérant le User associé
-      this.userService.getCurrent(token).pipe(delay(1000)).subscribe({
+      this.userService.getCurrent().subscribe({
         // Un user à été récuperer
         next:(data: User)=>{
           // Je stocke mon User et renseigne l'état de l'application car User n'est plus null
-          const user: User = data;
-          console.log(user);
+          console.log(data);
           //Initialisation du User
-          this.setUser(user);
+          this.setUser(data);
           this.setInitialized(true);
           if(redirectRoute){
-          //Redirection Home / profile
-          this.router.navigate([redirectRoute]);
+            //Redirection Home / profile
+            this.router.navigate([redirectRoute]);
           }
         },
         error:(error)=>{
