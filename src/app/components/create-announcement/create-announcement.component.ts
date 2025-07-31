@@ -28,16 +28,16 @@ export class CreateAnnouncementComponent {
 
   private initForm(): void {
     this.announcementForm = this.fb.group({
-      title: ['test', [Validators.required, Validators.maxLength(100)]],
-      description: ['test', [Validators.required, Validators.maxLength(500)]],
-      address: ['2 rue du test', [Validators.required, Validators.maxLength(150)]],
-      city: ['test', [Validators.required, Validators.maxLength(150)]],
-      zipcode: ['55555', [Validators.required, Validators.pattern(/^\d{5}$/)]],
-      lattitude: ['4.2', [Validators.required, Validators.min(-90), Validators.max(90)]],
-      longitude: ['4.1', [Validators.required, Validators.min(-180), Validators.max(180)]],
-      maxClient: ['2', [Validators.required, Validators.min(1), Validators.max(20)]],
-      dailyPrice: ['25.00', [Validators.required, Validators.min(0.01)]],
-      imageCover: ['https://test.png', [Validators.required, Validators.maxLength(500), Validators.pattern(/^https?:\/\/.+\.(jpg|jpeg|png|gif|webp)$/i)]]
+      title: ['', [Validators.required, Validators.maxLength(100)]],
+      description: ['', [Validators.required, Validators.maxLength(500)]],
+      address: ['', [Validators.required, Validators.maxLength(150)]],
+      city: ['', [Validators.required, Validators.maxLength(150)]],
+      zipcode: ['', [Validators.required, Validators.pattern(/^\d{5}$/)]],
+      lattitude: ['', [Validators.required, Validators.min(-90), Validators.max(90)]],
+      longitude: ['', [Validators.required, Validators.min(-180), Validators.max(180)]],
+      maxClient: ['', [Validators.required, Validators.min(1), Validators.max(20)]],
+      dailyPrice: ['', [Validators.required, Validators.min(0.01)]],
+      imageCover: ['', [Validators.required, Validators.maxLength(500), Validators.pattern(/^https?:\/\/.+\.(jpg|jpeg|png|gif|webp)$/i)]]
     });
   }
 
@@ -65,6 +65,7 @@ export class CreateAnnouncementComponent {
     if (this.announcementForm.valid) {
       this.isSubmitting = true;
 
+      //Reformattage des datas
       const announcementData: Partial<Announcement> = {
         title: this.announcementForm.get('title')?.value,
         description: this.announcementForm.get('description')?.value,

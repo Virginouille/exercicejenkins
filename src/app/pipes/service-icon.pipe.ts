@@ -11,28 +11,28 @@ export class ServiceIconPipe implements PipeTransform {
     return this.emojiMap[title] || '✅'; // fallback si non trouvé
   }
 
-emojiMap: { [title: string]: string } = {
-  'Ménage inclus': '🧹',
-  'Linge de maison fourni': '🛏️',
-  'Accueil personnalisé': '🤝',
-  'Conciergerie 24h/24': '🎧',
-  'Petit-déjeuner livré': '🥐',
-  'Courses livrées': '🛍️',
-  'Navette aéroport': '🚌',
-  'Location de voiture': '🚗',
-  'Guide touristique': '🗺️',
-  'Réservation restaurants': '🍽️',
-  'Billetterie spectacles': '🎫',
-  'Massages à domicile': '💆',
-  'Chef à domicile': '👨‍🍳',
-  'Baby-sitting': '👶',
-  'Promenade d\'animaux': '🐾',
-  'Laverie express': '🧺',
-  'Maintenance technique': '🛠️',
-  'Check-in tardif': '⏰',
-  'Stockage bagages': '💼',
-  'WiFi professionnel': '📶'
-};
+  emojiMap: { [title: string]: string } = {
+    'Ménage inclus': '🧹',
+    'Linge de maison fourni': '🛏️',
+    'Accueil personnalisé': '🤝',
+    'Conciergerie 24h/24': '🎧',
+    'Petit-déjeuner livré': '🥐',
+    'Courses livrées': '🛍️',
+    'Navette aéroport': '🚌',
+    'Location de voiture': '🚗',
+    'Guide touristique': '🗺️',
+    'Réservation restaurants': '🍽️',
+    'Billetterie spectacles': '🎫',
+    'Massages à domicile': '💆',
+    'Chef à domicile': '👨‍🍳',
+    'Baby-sitting': '👶',
+    'Promenade d\'animaux': '🐾',
+    'Laverie express': '🧺',
+    'Maintenance technique': '🛠️',
+    'Check-in tardif': '⏰',
+    'Stockage bagages': '💼',
+    'WiFi professionnel': '📶'
+  };
 
 
 }

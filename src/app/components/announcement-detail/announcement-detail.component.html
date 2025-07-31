@@ -1,4 +1,4 @@
-@if (announcement) {
+@if (announcement && !loading) {
     <!-- announcement-detail.component.html -->
 <main class="bg-gray-50 font-sans min-h-screen">
   <!-- Hero Section avec images -->
@@ -10,8 +10,8 @@
       <div class="grid lg:grid-cols-2 gap-4 mb-8">
         <!-- Image principale -->
         <div class="relative rounded-2xl overflow-hidden shadow-lg">
-          <img 
-            [src]="announcement.imageCover" 
+          <img
+            [src]="announcement.imageCover"
             [alt]="announcement.title"
             class="w-full h-96 lg:h-[500px] object-cover"
           />
@@ -26,8 +26,8 @@
         <div class="grid grid-cols-2 gap-4">
           @for(image of (announcement.images | slice:0:4); track image.id) {
             <div class="relative rounded-xl overflow-hidden shadow-md cursor-pointer hover:shadow-lg transition">
-              <img 
-                [src]="image.imageUrl" 
+              <img
+                [src]="image.imageUrl"
                 [alt]="announcement.title"
                 class="w-full h-48 object-cover hover:scale-105 transition-transform duration-300"
               />
@@ -176,15 +176,15 @@
               <div class="grid grid-cols-2 gap-4">
                 <div>
                   <label class="block text-sm font-medium text-gray-700 mb-2">Arrivée</label>
-                  <input 
-                    type="date" 
+                  <input
+                    type="date"
                     class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-400 focus:outline-none"
                   />
                 </div>
                 <div>
                   <label class="block text-sm font-medium text-gray-700 mb-2">Départ</label>
-                  <input 
-                    type="date" 
+                  <input
+                    type="date"
                     class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-400 focus:outline-none"
                   />
                 </div>
@@ -200,7 +200,7 @@
                 </select>
               </div>
 
-              <button 
+              <button
 
                 class="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-semibold py-4 rounded-xl shadow-lg transition-all duration-300 hover:shadow-xl hover:scale-105"
               >
@@ -246,6 +246,8 @@
     </div>
   </div>
 </main>
+}@else if (loading){
+    <app-custom-loader [size]="8"></app-custom-loader>
 }@else {
-    <p>Chargement</p>
+  <app-error [errorText]="errorTextParent" [errorCode]="errorStatusParent"></app-error>
 }

@@ -51,7 +51,8 @@ export class AuthService {
       this.userService.getCurrent().subscribe({
         // Un user à été récuperer
         next:(data: User)=>{
-          // Je stocke mon User et renseigne l'état de l'application car User n'est plus null
+          // Je stocke mon User
+          //  et renseigne l'état de l'application car User n'est plus null
           console.log(data);
           //Initialisation du User
           this.setUser(data);

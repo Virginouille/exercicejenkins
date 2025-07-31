@@ -43,7 +43,7 @@ export class EquipmentIconPipe implements PipeTransform {
   'Kayaks': '🛶',
   'Barbecue': '🍖',
   'Lit bébé': '👶',
-  
+
 };
 
 
