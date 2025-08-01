@@ -12,14 +12,22 @@ export class AuthService {
   private userService: UserService = inject(UserService);
   private router : Router = inject(Router); // Pour la redirection
 
+  // BehaviourSubject est un type spécial d'Observable:
+  // Stocke la dernière valeur émise
+  // Émet immédiatement cette valeur aux nouveaux abonnés
+  // Permet de récupérer la valeur courante avec .value
   private initializedSubject = new BehaviorSubject<boolean>(false);
+  //On affecte ensuite cet observable a une prop pour encapsuler notre Subject
+  // user$ devient une référence directe au même flux de données que _user
+  // mais avec une interface restreinte (lecture seule)
+  // Les composants seront Subscribe a initialized$ et non initializedSubject
   public initialized$ = this.initializedSubject.asObservable();
-  //Utilisation d'un observable pour partager la prop User aux autre composants
-  private userSubject = new BehaviorSubject<User | null>(null);
-  public user$ = this.userSubject.asObservable();
   //Le $ en fin de variable est une convention pour identifier les data observable
 
-  //Getter pour la simplicité d'utilisation
+  private userSubject = new BehaviorSubject<User | null>(null);
+  public user$ = this.userSubject.asObservable();
+
+  //Getter pour la prop privée
   get user(): User | null {
     return this.userSubject.value;
   }
