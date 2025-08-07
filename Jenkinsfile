@@ -1,67 +1,44 @@
 pipeline {
-    agent any
-    
-    tools {
-        maven 'mvn'
+    agent {
+        // Utilise l'image Node.js
+        docker { 
+            image 'node:18-alpine'
+            args '--entrypoint=/bin/sh'
+        }
     }
-    
-    environment {
-        JAVA_HOME = '/usr/lib/jvm/java-17-openjdk-amd64'
-        PATH = "${JAVA_HOME}/bin:${env.PATH}"
-        IMAGE_NAME = 'spring-jenkins'
-        IMAGE_TAG = 'latest'
-    }
-    
     stages {
-        stage('Checkout sur la branche main') {
+        stage('Checkout') {
             steps {
+                // Jenkins récupère automatiquement le code
                 git branch: 'main', url: 'https://github.com/Virginouille/exercicejenkins.git' 
             }
         }
-
         stage('Build') {
             steps {
-                sh 'mvn compile'
+                // Installe les dépendances et compile le projet Angular
+                sh 'npm install'
+                sh 'npm run build'
             }
         }
-
         stage('Test') {
             steps {
-                sh 'mvn test'
+                sh 'npm test'
             }
         }
-
-
         stage('Gen artifact') {
             steps {
-                // Construire image docker
-                sh "docker build -t ${IMAGE_NAME}:${IMAGE_TAG} ."
+                // Crée l'image Docker de l'application
+                sh "docker build -t spring-jenkins:latest ."
             }
         }
-
         stage('Deployment') {
             steps {
-            // Lancer notre conteneur d'application
-            sh """
-            docker stop ${IMAGE_NAME} || true
-            docker rm ${IMAGE_NAME} || true
-            docker run -d --name ${IMAGE_NAME} -p 8081:8080 ${IMAGE_NAME}:${IMAGE_NAME}
-            """
-            
+                sh """
+                docker stop spring-jenkins || true
+                docker rm spring-jenkins || true
+                docker run -d --name spring-jenkins -p 8081:8080 spring-jenkins:latest
+                """
             }
         }
-
-        stage('Archive test reports') {
-            steps {
-                junit 'target/surefire-reports/*.xml'
-            }
-        }
-
-        stage('Archive artifact') {
-            steps {
-                archiveArtifacts artifacts: 'target/*.jar'
-            }
-        }
-        
     }
 }
