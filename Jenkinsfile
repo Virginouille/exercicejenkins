@@ -1,18 +1,19 @@
 pipeline {
-    agent any // on utilise le système hôte pour toutes les étapes
+    agent any // exécute tout sur le système Jenkins hôte
 
     stages {
+
         stage('Checkout') {
             steps {
-                git branch: 'main', url: 'https://github.com/Virginouille/exercicejenkins.git' 
+                git branch: 'main', url: 'https://github.com/Virginouille/exercicejenkins.git'
             }
         }
 
-        stage('Build in Docker Node') {
+        stage('Build Angular App') {
             agent {
                 docker {
                     image 'node:18-alpine'
-                    args '--entrypoint=/bin/sh'
+                    args '-u root' // pour autoriser npm à écrire
                 }
             }
             steps {
@@ -27,19 +28,19 @@ pipeline {
             }
         }
 
-        stage('Gen artifact') {
+        stage('Build Docker Image') {
             steps {
-                sh "docker build -t spring-jenkins:latest ."
+                sh 'docker build -t spring-jenkins:latest .'
             }
         }
 
-        stage('Deployment') {
+        stage('Deploy Docker Container') {
             steps {
-                sh """
-                docker stop spring-jenkins || true
-                docker rm spring-jenkins || true
-                docker run -d --name spring-jenkins -p 8081:8080 spring-jenkins:latest
-                """
+                sh '''
+                    docker stop spring-jenkins || true
+                    docker rm spring-jenkins || true
+                    docker run -d --name spring-jenkins -p 8081:8080 spring-jenkins:latest
+                '''
             }
         }
     }
